@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CardealerFlow — The Smart Platform for Independent Car Dealers</title>
+<meta name="description" content="CardealerFlow gives independent BHPH dealers a website, inventory management, AI chat, and lead automation. Built for the Hispanic market. No credit needed.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   VARIABLES
+============================================= */
+:root {
+  --blue: #0057FF;
+  --blue-dark: #003DB5;
+  --blue-glow: rgba(0,87,255,0.25);
+  --navy: #080D1E;
+  --navy-2: #0D1530;
+  --navy-3: #111E40;
+  --navy-4: #0A0F2A;
+  --white: #FFFFFF;
+  --text-muted: rgba(255,255,255,0.6);
+  --text-dim: rgba(255,255,255,0.35);
+  --border: rgba(255,255,255,0.08);
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+/* =============================================
+   NAVBAR
+============================================= */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3rem;
+  background: rgba(8,13,30,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.nav-logo-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--blue);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  color: #fff;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.nav-logo-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--white);
+  letter-spacing: 0.5px;
+}
+
+.nav-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  margin: 0 0.5rem;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--white); }
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.btn-signin {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.btn-signin:hover { color: var(--white); }
+
+.btn-demo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  color: var(--navy);
+  padding: 10px 22px;
+  border-radius: var(--radius-sm);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-demo:hover {
+  background: var(--blue);
+  color: var(--white);
+  transform: translateY(-1px);
+}
+
+.btn-demo-blue {
+  background: var(--blue);
+  color: var(--white);
+}
+
+.btn-demo-blue:hover {
+  background: var(--blue-dark);
+  color: var(--white);
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+}
+
+/* =============================================
+   HERO
+============================================= */
+.hero {
+  min-height: 100vh;
+  padding-top: 70px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 80% at 55% 40%, #1a2a6b 0%, #0D1530 40%, #080D1E 75%);
+  z-index: 0;
+}
+
+.hero-glow {
+  position: absolute;
+  top: 15%;
+  left: 55%;
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(0,87,255,0.18) 0%, transparent 65%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 5rem 3rem 8rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  width: 100%;
+}
+
+.hero-content { max-width: 520px; }
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0,87,255,0.12);
+  border: 1px solid rgba(0,87,255,0.3);
+  border-radius: 100px;
+  padding: 6px 16px;
+  margin-bottom: 1.5rem;
+}
+
+.hero-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.5; transform:scale(1.4); }
+}
+
+.hero-eyebrow span {
+  font-size: 12px;
+  font-weight: 700;
+  color: #6FA3FF;
+  letter-spacing: 0.5px;
+}
+
+.hero h1 {
+  font-family: 'Barlow', sans-serif;
+  font-size: clamp(42px, 5vw, 60px);
+  font-weight: 800;
+  line-height: 1.05;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.5px;
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: #6FA3FF;
+}
+
+.hero-sub {
+  font-size: 17px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  max-width: 440px;
+}
+
+.hero-cta-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--white);
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: all 0.2s;
+}
+
+.btn-outline:hover { border-color: var(--white); }
+
+.hero-trust {
+  margin-top: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-trust-avatars {
+  display: flex;
+}
+
+.trust-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--blue);
+  border: 2px solid var(--navy-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  margin-left: -8px;
+}
+
+.trust-avatar:first-child { margin-left: 0; }
+
+.hero-trust-text {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.hero-trust-text strong { color: var(--white); }
+
+/* Dashboard mockup */
+.hero-mockup {
+  position: relative;
+}
+
+.mockup-frame {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 16px;
+  backdrop-filter: blur(4px);
+  box-shadow:
+    0 0 0 1px rgba(0,87,255,0.15),
+    0 40px 80px rgba(0,0,0,0.5),
+    0 0 60px rgba(0,87,255,0.1);
+}
+
+.mockup-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.mockup-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.mockup-url {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border-radius: 6px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.mockup-screen {
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--navy-3);
+}
+
+/* Mini dashboard inside mockup */
+.mini-dash {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  height: 320px;
+}
+
+.mini-sidebar {
+  background: var(--navy);
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.mini-logo {
+  width: 32px;
+  height: 32px;
+  background: var(--blue);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.mini-nav-item {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.mini-nav-item.active { background: rgba(0,87,255,0.3); }
+
+.mini-main {
+  padding: 14px;
+  overflow: hidden;
+}
+
+.mini-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.mini-stat {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.mini-stat-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--blue);
+  line-height: 1;
+}
+
+.mini-stat-lbl {
+  font-size: 9px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.mini-cars {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.mini-car-row {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mini-car-dot {
+  width: 24px;
+  height: 20px;
+  border-radius: 4px;
+  background: rgba(0,87,255,0.2);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mini-car-info { flex: 1; }
+.mini-car-name { font-size: 9px; font-weight: 600; color: var(--white); }
+.mini-car-meta { font-size: 8px; color: var(--text-dim); }
+.mini-car-price { font-size: 10px; font-weight: 700; color: var(--blue); }
+
+.mini-badge {
+  font-size: 7px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 100px;
+  background: rgba(0,87,255,0.2);
+  color: #6FA3FF;
+}
+
+.mini-leads-bar {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.mini-leads-title { font-size: 9px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
+
+.mini-lead-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.mini-lead-avatar {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--blue);
+  font-size: 7px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mini-lead-name { font-size: 9px; color: var(--white); flex: 1; }
+.mini-lead-status { font-size: 7px; font-weight: 700; padding: 1px 5px; border-radius: 4px; background: rgba(34,197,94,0.2); color: #4ADE80; }
+
+/* Floating cards on mockup */
+.float-card {
+  position: absolute;
+  background: rgba(13,21,48,0.95);
+  border: 1px solid rgba(0,87,255,0.3);
+  border-radius: 12px;
+  padding: 12px 14px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  animation: floatY 4s ease-in-out infinite;
+}
+
+@keyframes floatY {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.float-card-1 {
+  top: -20px;
+  right: -30px;
+  animation-delay: 0s;
+}
+
+.float-card-2 {
+  bottom: 30px;
+  left: -40px;
+  animation-delay: 2s;
+}
+
+.float-num { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: var(--blue); }
+.float-lbl { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+.float-trend { font-size: 10px; color: #4ADE80; font-weight: 600; }
+
+/* =============================================
+   LOGOS / SOCIAL PROOF STRIP
+============================================= */
+.strip {
+  background: var(--navy-2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 1.5rem 3rem;
+}
+
+.strip-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.strip-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.strip-stats {
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.strip-stat {
+  text-align: center;
+}
+
+.strip-stat-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--white);
+}
+
+.strip-stat-lbl {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+/* =============================================
+   FEATURES SECTION
+============================================= */
+.features {
+  background: var(--navy);
+  padding: 6rem 3rem;
+}
+
+.features-inner { max-width: 1280px; margin: 0 auto; }
+
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0,87,255,0.1);
+  border: 1px solid rgba(0,87,255,0.25);
+  border-radius: 100px;
+  padding: 5px 14px;
+  margin-bottom: 2.5rem;
+}
+
+.section-tag-icon {
+  width: 18px;
+  height: 18px;
+  background: var(--blue);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+.section-tag span {
+  font-size: 12px;
+  font-weight: 700;
+  color: #6FA3FF;
+  letter-spacing: 0.3px;
+}
+
+.feature-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+  padding: 5rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.feature-block:first-child { border-top: none; padding-top: 0; }
+.feature-block.reverse { direction: rtl; }
+.feature-block.reverse > * { direction: ltr; }
+
+.feature-content {}
+
+.feature-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 5px 14px;
+  margin-bottom: 1.25rem;
+}
+
+.feature-tag-icon { font-size: 14px; }
+.feature-tag span { font-size: 12px; font-weight: 700; color: var(--text-muted); }
+
+.feature-title {
+  font-family: 'Barlow', sans-serif;
+  font-size: clamp(30px, 3vw, 42px);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  letter-spacing: -0.3px;
+}
+
+.feature-desc {
+  font-size: 16px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 1.75rem;
+  max-width: 420px;
+}
+
+.feature-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.feature-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.feature-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(0,87,255,0.15);
+  border: 1px solid rgba(0,87,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #6FA3FF;
+  flex-shrink: 0;
+}
+
+/* Feature visuals */
+.feature-visual {
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--navy-2);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  position: relative;
+}
+
+.feature-visual img {
+  width: 100%;
+  display: block;
+  border-radius: 20px;
+}
+
+/* Website preview cards */
+.website-stack {
+  position: relative;
+  height: 340px;
+  padding: 1.5rem;
+}
+
+.site-card {
+  position: absolute;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.site-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+}
+
+.site-card-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--navy-3), var(--navy-4));
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Marketing tools grid */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 1.5rem;
+}
+
+.tool-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.tool-card:hover {
+  border-color: rgba(0,87,255,0.3);
+  background: rgba(0,87,255,0.06);
+}
+
+.tool-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.tool-name { font-size: 12px; font-weight: 700; color: var(--white); }
+.tool-desc { font-size: 11px; color: var(--text-muted); }
+
+/* Addons grid */
+.addons-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 1.5rem;
+}
+
+.addon-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.addon-card:hover { border-color: rgba(0,87,255,0.35); }
+
+.addon-icon { font-size: 28px; }
+.addon-name { font-size: 12px; font-weight: 700; color: var(--white); }
+
+/* =============================================
+   PRICING
+============================================= */
+.pricing {
+  background: var(--navy-2);
+  border-top: 1px solid var(--border);
+  padding: 7rem 3rem;
+}
+
+.pricing-inner { max-width: 1280px; margin: 0 auto; }
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-header h2 {
+  font-family: 'Barlow', sans-serif;
+  font-size: clamp(34px, 4vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.section-header p {
+  font-size: 17px;
+  color: var(--text-muted);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.price-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.price-card:hover {
+  border-color: rgba(0,87,255,0.4);
+  transform: translateY(-4px);
+}
+
+.price-card.featured {
+  background: rgba(0,87,255,0.08);
+  border: 2px solid var(--blue);
+}
+
+.price-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--blue);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 16px;
+  border-radius: 100px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.price-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin-bottom: 0.75rem;
+}
+
+.price-amount {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.price-dollar {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.price-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 56px;
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1;
+}
+
+.price-period { font-size: 14px; color: var(--text-muted); }
+
+.price-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 1.75rem;
+  line-height: 1.5;
+}
+
+.price-divider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 1.5rem;
+}
+
+.price-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+
+.price-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.price-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(0,87,255,0.15);
+  border: 1px solid rgba(0,87,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: #6FA3FF;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.btn-plan {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 13px;
+  border-radius: var(--radius-sm);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--white);
+  background: transparent;
+}
+
+.btn-plan:hover { border-color: var(--white); }
+.btn-plan.primary { background: var(--blue); border-color: var(--blue); }
+.btn-plan.primary:hover { background: var(--blue-dark); }
+
+/* =============================================
+   CTA BOTTOM
+============================================= */
+.cta-bottom {
+  background: var(--navy-4);
+  padding: 7rem 3rem;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-bottom::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(0,87,255,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cta-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.cta-title {
+  font-family: 'Barlow', sans-serif;
+  font-size: clamp(36px, 4.5vw, 58px);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+}
+
+.cta-sub {
+  font-size: 17px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* =============================================
+   FOOTER
+============================================= */
+footer {
+  background: var(--navy-2);
+  border-top: 1px solid var(--border);
+  padding: 4rem 3rem 2rem;
+}
+
+.footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.footer-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.footer-brand-logo-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--blue);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  color: #fff;
+}
+
+.footer-brand-logo-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.footer-tagline {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  max-width: 260px;
+}
+
+.footer-phone-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+
+.footer-phone {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--white);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-phone:hover { color: #6FA3FF; }
+
+.footer-col h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 1.25rem;
+}
+
+.footer-col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-col ul a {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-col ul a:hover { color: var(--white); }
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-copy { font-size: 13px; color: var(--text-dim); }
+
+.footer-links-bottom {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer-links-bottom a {
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links-bottom a:hover { color: var(--text-muted); }
+
+/* =============================================
+   RESPONSIVE
+============================================= */
+@media (max-width: 1024px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-mockup { display: none; }
+  .feature-block { grid-template-columns: 1fr; gap: 3rem; }
+  .feature-block.reverse { direction: ltr; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  nav { padding: 0 1.5rem; }
+  .nav-links { display: none; }
+  .nav-actions .btn-signin { display: none; }
+  .hamburger { display: flex; }
+  .hero-inner { padding: 3rem 0 6rem; }
+  .features { padding: 4rem 1.5rem; }
+  .pricing { padding: 4rem 1.5rem; }
+  .cta-bottom { padding: 4rem 1.5rem; }
+  footer { padding: 3rem 1.5rem 1.5rem; }
+  .footer-top { grid-template-columns: 1fr; }
+  .strip { padding: 1.5rem; }
+  .strip-stats { gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAVBAR ============ -->
+<nav id="navbar">
+  <a href="/" class="nav-logo">
+    <div class="nav-logo-icon">CDF</div>
+    <div class="nav-divider"></div>
+    <span class="nav-logo-text">CardealerFlow</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#features">Why CardealerFlow?</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <a href="admin.html" class="btn-signin">Sign In</a>
+    <a href="#pricing" class="btn-demo">Book A Demo</a>
+  </div>
+
+  <button class="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-glow"></div>
+
+  <!-- Wave bottom -->
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="display:block;width:100%;height:100px;">
+      <path d="M0,60 C240,120 480,0 720,60 C960,120 1200,0 1440,60 L1440,120 L0,120 Z" fill="#080D1E" opacity="0.8"/>
+      <path d="M0,80 C360,20 720,120 1080,60 C1260,30 1380,90 1440,80 L1440,120 L0,120 Z" fill="#080D1E"/>
+    </svg>
+  </div>
+
+  <div class="hero-inner">
+    <!-- Left: content -->
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-dot"></div>
+        <span>BUILT FOR INDEPENDENT BHPH DEALERS</span>
+      </div>
+
+      <h1>Your perfect<br><em>car dealer</em><br>Website.</h1>
+
+      <p class="hero-sub">
+        CardealerFlow gives independent dealers a feature-packed website with AI-powered lead management, WhatsApp automation, and inventory tools — all in one platform built for the Hispanic market.
+      </p>
+
+      <div class="hero-cta-row">
+        <a href="#pricing" class="btn-demo btn-demo-blue">
+          Book a demo →
+        </a>
+        <a href="#features" class="btn-outline">See features</a>
+      </div>
+
+      <div class="hero-trust">
+        <div class="hero-trust-avatars">
+          <div class="trust-avatar">AP</div>
+          <div class="trust-avatar" style="background:#22C55E">BR</div>
+          <div class="trust-avatar" style="background:#F59E0B">CM</div>
+          <div class="trust-avatar" style="background:#EC4899">+</div>
+        </div>
+        <div class="hero-trust-text">
+          <strong>Growing fast</strong> — join independent dealers already using CDF
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: dashboard mockup -->
+    <div class="hero-mockup">
+      <!-- Floating cards -->
+      <div class="float-card float-card-1">
+        <div class="float-num">8</div>
+        <div class="float-lbl">New leads today</div>
+        <div class="float-trend">↑ 5 from WhatsApp</div>
+      </div>
+      <div class="float-card float-card-2">
+        <div class="float-num">$47K</div>
+        <div class="float-lbl">Monthly sales</div>
+        <div class="float-trend">↑ 12% vs last month</div>
+      </div>
+
+      <div class="mockup-frame">
+        <div class="mockup-bar">
+          <div class="mockup-dot" style="background:#FF5F57"></div>
+          <div class="mockup-dot" style="background:#FFBD2E"></div>
+          <div class="mockup-dot" style="background:#28CA42"></div>
+          <div class="mockup-url">cardealerflow.com/dashboard</div>
+        </div>
+        <div class="mockup-screen">
+          <div class="mini-dash">
+            <!-- Mini sidebar -->
+            <div class="mini-sidebar">
+              <div class="mini-logo">CDF</div>
+              <div class="mini-nav-item active">⊞</div>
+              <div class="mini-nav-item">☰</div>
+              <div class="mini-nav-item">✉</div>
+              <div class="mini-nav-item">◷</div>
+            </div>
+            <!-- Mini main -->
+            <div class="mini-main">
+              <div class="mini-stats">
+                <div class="mini-stat">
+                  <div class="mini-stat-num">24</div>
+                  <div class="mini-stat-lbl">Cars for sale</div>
+                </div>
+                <div class="mini-stat">
+                  <div class="mini-stat-num">8</div>
+                  <div class="mini-stat-lbl">New leads</div>
+                </div>
+                <div class="mini-stat">
+                  <div class="mini-stat-num">3</div>
+                  <div class="mini-stat-lbl">Appts today</div>
+                </div>
+              </div>
+              <div class="mini-cars">
+                <div class="mini-car-row">
+                  <div class="mini-car-dot">🚗</div>
+                  <div class="mini-car-info">
+                    <div class="mini-car-name">2019 BMW X3 Sport</div>
+                    <div class="mini-car-meta">20,850 mi · Rebuilt</div>
+                  </div>
+                  <div class="mini-car-price">$39,200</div>
+                  <div class="mini-badge">Live</div>
+                </div>
+                <div class="mini-car-row">
+                  <div class="mini-car-dot">🏎️</div>
+                  <div class="mini-car-info">
+                    <div class="mini-car-name">2016 Toyota BRZ</div>
+                    <div class="mini-car-meta">61,475 mi · Rebuilt</div>
+                  </div>
+                  <div class="mini-car-price">$21,690</div>
+                  <div class="mini-badge">Live</div>
+                </div>
+                <div class="mini-car-row">
+                  <div class="mini-car-dot">🚙</div>
+                  <div class="mini-car-info">
+                    <div class="mini-car-name">2019 Audi S4 Premium</div>
+                    <div class="mini-car-meta">11,475 mi · Rebuilt</div>
+                  </div>
+                  <div class="mini-car-price">$41,400</div>
+                  <div class="mini-badge">Live</div>
+                </div>
+              </div>
+              <div class="mini-leads-bar">
+                <div class="mini-leads-title">LATEST LEADS</div>
+                <div class="mini-lead-row">
+                  <div class="mini-lead-avatar">MG</div>
+                  <div class="mini-lead-name">María González</div>
+                  <div class="mini-lead-status">New</div>
+                </div>
+                <div class="mini-lead-row">
+                  <div class="mini-lead-avatar" style="background:#22C55E">CR</div>
+                  <div class="mini-lead-name">Carlos Ramírez</div>
+                  <div class="mini-lead-status">Contacted</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS STRIP ============ -->
+<div class="strip">
+  <div class="strip-inner">
+    <span class="strip-label">TRUSTED BY INDEPENDENT DEALERS</span>
+    <div class="strip-stats">
+      <div class="strip-stat">
+        <div class="strip-stat-num">24hrs</div>
+        <div class="strip-stat-lbl">Live in 24 hours</div>
+      </div>
+      <div class="strip-stat">
+        <div class="strip-stat-num">$0</div>
+        <div class="strip-stat-lbl">Setup fee</div>
+      </div>
+      <div class="strip-stat">
+        <div class="strip-stat-num">24/7</div>
+        <div class="strip-stat-lbl">AI responds for you</div>
+      </div>
+      <div class="strip-stat">
+        <div class="strip-stat-num">~1 min</div>
+        <div class="strip-stat-lbl">Lead response time</div>
+      </div>
+      <div class="strip-stat">
+        <div class="strip-stat-num">100%</div>
+        <div class="strip-stat-lbl">Bilingual (EN/ES)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FEATURES ============ -->
+<section class="features" id="features">
+  <div class="features-inner">
+
+    <!-- Feature 1: Website Design -->
+    <div class="feature-block">
+      <div class="feature-content">
+        <div class="feature-tag">
+          <span class="feature-tag-icon">🌐</span>
+          <span>Website Design</span>
+        </div>
+        <h2 class="feature-title">Start with an<br>amazing car<br>website</h2>
+        <p class="feature-desc">
+          Whether you choose our quick-launch template or work with us to customize, we'll tailor your website to match your brand, goals, and market. Live in 24 hours.
+        </p>
+        <ul class="feature-list">
+          <li><div class="feature-check">✓</div> Custom colors, logo & domain</li>
+          <li><div class="feature-check">✓</div> Full inventory with photos & filters</li>
+          <li><div class="feature-check">✓</div> Mobile-first, SEO optimized</li>
+          <li><div class="feature-check">✓</div> BHPH & Rebuilt Title ready</li>
+          <li><div class="feature-check">✓</div> Bilingual English / Spanish</li>
+        </ul>
+      </div>
+      <div class="feature-visual">
+        <div class="website-stack">
+          <!-- Stack of website mockups -->
+          <div class="site-card" style="width:75%;height:200px;top:80px;left:20px;z-index:1;transform:rotate(-3deg)">
+            <div class="site-card-placeholder">
+              <div style="font-size:28px">🚗</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.4)">Dealer Website</div>
+            </div>
+          </div>
+          <div class="site-card" style="width:78%;height:210px;top:50px;left:50px;z-index:2;transform:rotate(-1deg)">
+            <div class="site-card-placeholder">
+              <div style="font-size:28px">🏎️</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.4)">Dealer Website</div>
+            </div>
+          </div>
+          <div class="site-card" style="width:80%;height:220px;top:20px;right:10px;z-index:3;transform:rotate(1deg)">
+            <div class="site-card-placeholder">
+              <div style="font-size:28px">🚙</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.4)">Dealer Website</div>
+            </div>
+          </div>
+          <div class="site-card" style="width:82%;height:230px;top:0px;left:30px;z-index:4">
+            <img src="images/hero-bg.png" alt="Auto Paisano website" style="object-position:top center">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 2: AI & Marketing Tools -->
+    <div class="feature-block reverse">
+      <div class="feature-content">
+        <div class="feature-tag">
+          <span class="feature-tag-icon">🤖</span>
+          <span>AI & Marketing Tools</span>
+        </div>
+        <h2 class="feature-title">Get world-class<br>marketing tools</h2>
+        <p class="feature-desc">
+          Your website comes loaded with AI-powered tools to respond leads instantly, automate follow-ups, display social proof, and convert more traffic into buyers.
+        </p>
+        <ul class="feature-list">
+          <li><div class="feature-check">✓</div> AI chatbot responds in &lt;1 minute</li>
+          <li><div class="feature-check">✓</div> WhatsApp automation</li>
+          <li><div class="feature-check">✓</div> Email lead sequences (n8n)</li>
+          <li><div class="feature-check">✓</div> Lead inbox & CRM built-in</li>
+          <li><div class="feature-check">✓</div> Appointment calendar</li>
+        </ul>
+      </div>
+      <div class="feature-visual">
+        <div class="tools-grid">
+          <div class="tool-card">
+            <div class="tool-icon" style="background:rgba(0,87,255,0.15)">🤖</div>
+            <div class="tool-name">AI Chat</div>
+            <div class="tool-desc">Responds 24/7 in English & Spanish</div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon" style="background:rgba(37,211,102,0.15)">📱</div>
+            <div class="tool-name">WhatsApp</div>
+            <div class="tool-desc">Auto-respond to every message</div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon" style="background:rgba(245,197,24,0.15)">📊</div>
+            <div class="tool-name">Lead Manager</div>
+            <div class="tool-desc">Track every lead & contact</div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon" style="background:rgba(239,68,68,0.15)">📧</div>
+            <div class="tool-name">Email Sequences</div>
+            <div class="tool-desc">Automated follow-up emails</div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon" style="background:rgba(168,85,247,0.15)">📅</div>
+            <div class="tool-name">Appointments</div>
+            <div class="tool-desc">Book & manage test drives</div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon" style="background:rgba(6,182,212,0.15)">📈</div>
+            <div class="tool-name">Analytics</div>
+            <div class="tool-desc">Weekly performance reports</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 3: Addons -->
+    <div class="feature-block">
+      <div class="feature-content">
+        <div class="feature-tag">
+          <span class="feature-tag-icon">⚡</span>
+          <span>Addons & Integrations</span>
+        </div>
+        <h2 class="feature-title">Scale up w/<br>powerful addons<br>& automations</h2>
+        <p class="feature-desc">
+          Integrate powerful features with n8n, connect your CRM, automate your social media, and dominate your local market with tools built specifically for BHPH dealers.
+        </p>
+        <ul class="feature-list">
+          <li><div class="feature-check">✓</div> n8n automation workflows</div></li>
+          <li><div class="feature-check">✓</div> Inventory scraper & importer</li>
+          <li><div class="feature-check">✓</div> Social media content automation</li>
+          <li><div class="feature-check">✓</div> Local SEO dominance tools</li>
+          <li><div class="feature-check">✓</div> Custom integrations on request</li>
+        </ul>
+      </div>
+      <div class="feature-visual">
+        <div class="addons-grid">
+          <div class="addon-card">
+            <div class="addon-icon">⚡</div>
+            <div class="addon-name">n8n Automations</div>
+          </div>
+          <div class="addon-card">
+            <div class="addon-icon">🤖</div>
+            <div class="addon-name">AI Auto-Responder</div>
+          </div>
+          <div class="addon-card">
+            <div class="addon-icon">📱</div>
+            <div class="addon-name">Social Media Content</div>
+          </div>
+          <div class="addon-card">
+            <div class="addon-icon">📍</div>
+            <div class="addon-name">Local Dominance</div>
+          </div>
+          <div class="addon-card">
+            <div class="addon-icon">🔄</div>
+            <div class="addon-name">Social Automation</div>
+          </div>
+          <div class="addon-card">
+            <div class="addon-icon">🌐</div>
+            <div class="addon-name">Custom Websites</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="pricing" id="pricing">
+  <div class="pricing-inner">
+    <div class="section-header">
+      <h2>Simple, transparent<br>pricing</h2>
+      <p>No setup fees. No long-term contracts. Cancel anytime. Start with a 7-day free trial.</p>
+    </div>
+    <div class="pricing-grid">
+
+      <!-- Starter -->
+      <div class="price-card">
+        <div class="price-name">STARTER</div>
+        <div class="price-amount">
+          <span class="price-dollar">$</span>
+          <span class="price-num">49</span>
+          <span class="price-period">/mo</span>
+        </div>
+        <p class="price-desc">Perfect to get your dealership online fast with a professional website and inventory.</p>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li><div class="price-check">✓</div> Custom dealer website</li>
+          <li><div class="price-check">✓</div> Full inventory management</li>
+          <li><div class="price-check">✓</div> Photo upload per vehicle</li>
+          <li><div class="price-check">✓</div> Inventory importer (scraper)</li>
+          <li><div class="price-check">✓</div> Contact form & lead capture</li>
+          <li><div class="price-check">✓</div> Bilingual EN / ES</li>
+          <li><div class="price-check">✓</div> Mobile responsive</li>
+        </ul>
+        <a href="#" class="btn-plan">Get started</a>
+      </div>
+
+      <!-- Pro -->
+      <div class="price-card featured">
+        <div class="price-badge">MOST POPULAR</div>
+        <div class="price-name">PRO</div>
+        <div class="price-amount">
+          <span class="price-dollar">$</span>
+          <span class="price-num">149</span>
+          <span class="price-period">/mo</span>
+        </div>
+        <p class="price-desc">Everything in Starter plus AI chat, WhatsApp automation and a full lead management inbox.</p>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li><div class="price-check">✓</div> Everything in Starter</li>
+          <li><div class="price-check">✓</div> AI chatbot (Claude powered)</div></li>
+          <li><div class="price-check">✓</div> WhatsApp automation</li>
+          <li><div class="price-check">✓</div> Lead inbox & CRM</li>
+          <li><div class="price-check">✓</div> Appointment calendar</li>
+          <li><div class="price-check">✓</div> Payment calculator</li>
+          <li><div class="price-check">✓</div> Priority support</li>
+        </ul>
+        <a href="#" class="btn-plan primary">Get started</a>
+      </div>
+
+      <!-- Premium -->
+      <div class="price-card">
+        <div class="price-name">PREMIUM</div>
+        <div class="price-amount">
+          <span class="price-dollar">$</span>
+          <span class="price-num">249</span>
+          <span class="price-period">/mo</span>
+        </div>
+        <p class="price-desc">The full stack. Automations, email sequences, weekly reports, and everything your BDC needs.</p>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li><div class="price-check">✓</div> Everything in Pro</li>
+          <li><div class="price-check">✓</div> n8n automation workflows</li>
+          <li><div class="price-check">✓</div> Email follow-up sequences</li>
+          <li><div class="price-check">✓</div> Weekly performance reports</li>
+          <li><div class="price-check">✓</div> Social media automation</li>
+          <li><div class="price-check">✓</div> Custom domain included</li>
+          <li><div class="price-check">✓</div> Dedicated support</li>
+        </ul>
+        <a href="#" class="btn-plan">Get started</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA BOTTOM ============ -->
+<section class="cta-bottom">
+  <div class="cta-inner">
+    <h2 class="cta-title">Ready for a new<br>digital strategy?</h2>
+    <p class="cta-sub">
+      Take the first step by booking a demo with us. We'll show you how CardealerFlow can transform your dealership's online presence and lead generation.
+    </p>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a href="#" class="btn-demo btn-demo-blue" style="font-size:17px;padding:14px 32px">
+        Book A Demo
+      </a>
+      <a href="admin.html" class="btn-outline" style="font-size:17px;padding:14px 32px">
+        Sign In →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-logo">
+          <div class="footer-brand-logo-icon">CDF</div>
+          <span class="footer-brand-logo-text">CardealerFlow</span>
+        </div>
+        <p class="footer-tagline">We help independent BHPH dealers better achieve digital success with AI-powered tools.</p>
+        <div class="footer-phone-label">SALES & SUPPORT</div>
+        <a href="tel:+16152557700" class="footer-phone">(615) 255-7700</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#features">Websites</a></li>
+          <li><a href="#features">Marketing Tools</a></li>
+          <li><a href="#features">AI & Automation</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">About</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">F.A.Q</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="admin.html">Sign In</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 CardealerFlow. All rights reserved.</div>
+      <div class="footer-links-bottom">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* Navbar scroll effect */
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    if (window.scrollY > 50) {
+      nav.style.background = 'rgba(8,13,30,0.98)';
+    } else {
+      nav.style.background = 'rgba(8,13,30,0.85)';
+    }
+  });
+
+  /* Mobile menu */
+  function toggleMenu() {
+    const links = document.querySelector('.nav-links');
+    const isOpen = links.style.display === 'flex';
+    if (isOpen) {
+      links.style.display = 'none';
+    } else {
+      links.style.cssText = `
+        display:flex; flex-direction:column; position:fixed;
+        top:70px; left:0; right:0; background:rgba(8,13,30,0.98);
+        padding:1.5rem 2rem; border-bottom:1px solid rgba(255,255,255,0.08);
+        gap:1.25rem; z-index:99;
+      `;
+    }
+  }
+
+  /* Smooth scroll for anchor links */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
