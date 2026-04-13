@@ -1,0 +1,2355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — E&S Auto Paisano | CardealerFlow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   VARIABLES — CardealerFlow Admin: Blue + Navy
+============================================ */
+:root {
+  --blue: #0057FF;
+  --blue-dark: #003DB5;
+  --blue-light: #EBF2FF;
+  --blue-mid: #1A3A6B;
+  --navy: #0A0F1E;
+  --navy-2: #111827;
+  --navy-3: #1F2937;
+  --sidebar-w: 220px;
+  --bg: #F4F6FA;
+  --white: #FFFFFF;
+  --border: #E5E7EB;
+  --text: #111827;
+  --text-2: #6B7280;
+  --text-3: #9CA3AF;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ============================================
+   LOGIN PAGE
+============================================ */
+.login-page {
+  min-height: 100vh;
+  width: 100%;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 60% at 60% 40%, rgba(0,87,255,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(0,87,255,0.06) 0%, transparent 60%);
+}
+
+.login-card {
+  position: relative;
+  z-index: 2;
+  background: var(--white);
+  border-radius: 20px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+}
+
+.login-logo {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-logo img {
+  height: 28px;
+  filter: invert(1);
+}
+
+.login-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+
+.login-sub {
+  font-size: 14px;
+  color: var(--text-2);
+  margin-bottom: 2rem;
+}
+
+.form-field {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  transition: border-color 0.2s;
+  background: #FAFAFA;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--blue);
+  background: var(--white);
+}
+
+.btn-login {
+  width: 100%;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 0.5rem;
+}
+
+.btn-login:hover { background: var(--blue-dark); transform: translateY(-1px); }
+
+.login-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.login-footer a { color: var(--blue); text-decoration: none; font-weight: 600; }
+
+/* ============================================
+   LAYOUT — Sidebar + Main
+============================================ */
+.app {
+  display: none;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.app.visible { display: flex; }
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--navy);
+  min-height: 100vh;
+  position: fixed;
+  top: 0; left: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+
+.sidebar-header {
+  padding: 1.25rem 1.25rem 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-logo img {
+  height: 20px;
+  filter: brightness(1);
+}
+
+.dealer-badge {
+  background: rgba(0,87,255,0.15);
+  border: 1px solid rgba(0,87,255,0.3);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 1rem 1.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dealer-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #F5C518;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  color: #000;
+  flex-shrink: 0;
+}
+
+.dealer-info { overflow: hidden; }
+
+.dealer-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.dealer-plan {
+  font-size: 10px;
+  color: #0057FF;
+  font-weight: 600;
+}
+
+/* Nav */
+.sidebar-nav {
+  flex: 1;
+  padding: 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 1px;
+  padding: 0.75rem 0.5rem 0.25rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+  color: rgba(255,255,255,0.55);
+  font-size: 14px;
+  font-weight: 500;
+  position: relative;
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.9);
+}
+
+.nav-item.active {
+  background: rgba(0,87,255,0.2);
+  color: #fff;
+}
+
+.nav-item.active .nav-icon { color: var(--blue); }
+
+.nav-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-badge {
+  margin-left: auto;
+  background: var(--blue);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 100px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.sidebar-bottom {
+  padding: 1rem 0.75rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.btn-view-site {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: rgba(245,197,24,0.1);
+  border: 1px solid rgba(245,197,24,0.25);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  color: #F5C518;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  margin-bottom: 8px;
+}
+
+.btn-view-site:hover { background: rgba(245,197,24,0.18); }
+
+.btn-logout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 10px 12px;
+  color: rgba(255,255,255,0.35);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s;
+  font-family: 'Barlow', sans-serif;
+}
+
+.btn-logout:hover { color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.05); }
+
+/* MAIN */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TOP BAR */
+.topbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.topbar-left h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.topbar-left p {
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-notif {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-2);
+}
+
+.notif-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--danger);
+  border: 2px solid var(--white);
+}
+
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.user-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ============================================
+   CONTENT PANELS
+============================================ */
+.panel { display: none; padding: 2rem; }
+.panel.active { display: block; }
+
+/* ============================================
+   DASHBOARD PANEL
+============================================ */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--blue);
+}
+
+.stat-card.green::after { background: var(--success); }
+.stat-card.yellow::after { background: #F5C518; }
+.stat-card.red::after { background: var(--danger); }
+
+.stat-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  background: var(--blue-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+.stat-card.green .stat-icon { background: #DCFCE7; }
+.stat-card.yellow .stat-icon { background: #FFFBEB; }
+.stat-card.red .stat-icon { background: #FEF2F2; }
+
+.stat-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-2);
+  font-weight: 500;
+}
+
+.stat-change {
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.stat-change.up { color: var(--success); }
+.stat-change.down { color: var(--danger); }
+
+/* Dashboard grid */
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 20px;
+}
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.card-action {
+  font-size: 12px;
+  color: var(--blue);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.card-body { padding: 1.25rem; }
+
+/* Recent inventory in dashboard */
+.recent-car-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.recent-car-item:last-child { border-bottom: none; }
+
+.recent-car-thumb {
+  width: 52px;
+  height: 40px;
+  border-radius: 6px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.recent-car-info { flex: 1; }
+
+.recent-car-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.recent-car-meta {
+  font-size: 11px;
+  color: var(--text-2);
+  margin-top: 2px;
+}
+
+.recent-car-price {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--blue);
+}
+
+/* Lead items in dashboard */
+.lead-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.lead-item:last-child { border-bottom: none; }
+
+.lead-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--blue-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--blue);
+  flex-shrink: 0;
+}
+
+.lead-info { flex: 1; }
+.lead-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.lead-msg { font-size: 11px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
+
+.lead-time { font-size: 11px; color: var(--text-3); }
+
+.status-pill {
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-new { background: #EBF2FF; color: var(--blue); }
+.status-contacted { background: #DCFCE7; color: #15803D; }
+.status-lost { background: #FEF2F2; color: #B91C1C; }
+.status-available { background: #DCFCE7; color: #15803D; }
+.status-sold { background: #F3F4F6; color: #6B7280; }
+.status-pending { background: #FFFBEB; color: #B45309; }
+
+/* Appointments */
+.appt-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.appt-item:last-child { border-bottom: none; }
+
+.appt-time-block {
+  text-align: center;
+  background: var(--blue-light);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  min-width: 52px;
+  flex-shrink: 0;
+}
+
+.appt-time { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; color: var(--blue); line-height: 1; }
+.appt-ampm { font-size: 9px; color: var(--blue); font-weight: 600; }
+
+.appt-info { flex: 1; }
+.appt-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.appt-detail { font-size: 11px; color: var(--text-2); }
+
+/* ============================================
+   INVENTORY PANEL
+============================================ */
+.inv-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.inv-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  flex: 1;
+  max-width: 320px;
+}
+
+.inv-search input {
+  border: none;
+  background: none;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  flex: 1;
+  outline: none;
+}
+
+.inv-search input::placeholder { color: var(--text-3); }
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 18px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+}
+
+.btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--white);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 18px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
+
+/* Table */
+.table-wrap {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #F9FAFB;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-2);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text);
+  vertical-align: middle;
+}
+
+tr:last-child td { border-bottom: none; }
+
+tr:hover td { background: #FAFAFA; }
+
+.car-thumb-cell {
+  width: 52px;
+  height: 40px;
+  border-radius: 6px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  overflow: hidden;
+}
+
+.car-name-cell { font-weight: 600; font-size: 13px; }
+.car-sub-cell { font-size: 11px; color: var(--text-2); margin-top: 1px; }
+
+.price-cell {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--blue);
+}
+
+.action-menu {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.btn-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-2);
+  transition: all 0.15s;
+}
+
+.btn-icon:hover { border-color: var(--blue); color: var(--blue); }
+.btn-icon.danger:hover { border-color: var(--danger); color: var(--danger); }
+
+.table-footer {
+  padding: 12px 1.25rem;
+  background: #F9FAFB;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.table-count { font-size: 12px; color: var(--text-2); }
+
+.pagination {
+  display: flex;
+  gap: 4px;
+}
+
+.page-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-2);
+  transition: all 0.15s;
+}
+
+.page-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+.page-btn:hover:not(.active) { border-color: var(--blue); color: var(--blue); }
+
+/* ============================================
+   MODAL — Add/Edit Car
+============================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--white);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  z-index: 1;
+}
+
+.modal-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--text-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-body { padding: 1.5rem; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+.form-full { grid-column: 1 / -1; }
+
+.modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* Photo upload area */
+.upload-area {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #FAFAFA;
+}
+
+.upload-area:hover { border-color: var(--blue); background: var(--blue-light); }
+
+.upload-icon { font-size: 32px; margin-bottom: 0.5rem; }
+.upload-text { font-size: 14px; color: var(--text-2); }
+.upload-text span { color: var(--blue); font-weight: 600; }
+
+.upload-photos-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 1rem;
+}
+
+.upload-photo-thumb {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Scraper section */
+.scraper-card {
+  background: linear-gradient(135deg, #0A0F1E, #111827);
+  border: 1px solid rgba(0,87,255,0.3);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.scraper-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: rgba(0,87,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.scraper-text { flex: 1; }
+.scraper-title { font-weight: 700; font-size: 15px; color: #fff; margin-bottom: 4px; }
+.scraper-desc { font-size: 12px; color: rgba(255,255,255,0.5); }
+
+.scraper-input-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 1rem;
+}
+
+.scraper-input {
+  flex: 1;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  color: #fff;
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+}
+
+.scraper-input::placeholder { color: rgba(255,255,255,0.35); }
+.scraper-input:focus { outline: none; border-color: var(--blue); }
+
+.btn-scrape {
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 18px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-scrape:hover { background: var(--blue-dark); }
+
+/* ============================================
+   INBOX PANEL
+============================================ */
+.inbox-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 0;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  min-height: 600px;
+}
+
+.inbox-list {
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+}
+
+.inbox-list-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.inbox-list-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.unread-count {
+  background: var(--blue);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+
+.inbox-lead {
+  padding: 12px 1.25rem;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.inbox-lead:hover { background: #FAFAFA; }
+.inbox-lead.active { background: var(--blue-light); border-left: 3px solid var(--blue); }
+.inbox-lead.unread .inbox-lead-name { font-weight: 700; }
+
+.inbox-lead-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--blue-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--blue);
+  flex-shrink: 0;
+}
+
+.inbox-lead-info { flex: 1; overflow: hidden; }
+.inbox-lead-name { font-size: 13px; color: var(--text); }
+.inbox-lead-preview { font-size: 11px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+.inbox-lead-time { font-size: 10px; color: var(--text-3); margin-top: 4px; }
+
+.inbox-detail {
+  display: flex;
+  flex-direction: column;
+}
+
+.inbox-detail-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.inbox-detail-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--blue-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--blue);
+}
+
+.inbox-detail-name { font-size: 15px; font-weight: 600; color: var(--text); }
+.inbox-detail-contact { font-size: 12px; color: var(--text-2); }
+
+.inbox-actions { margin-left: auto; display: flex; gap: 8px; }
+
+.inbox-messages {
+  flex: 1;
+  padding: 1.25rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #FAFAFA;
+}
+
+.msg-bubble {
+  max-width: 75%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.msg-bubble.incoming {
+  background: var(--white);
+  border: 1px solid var(--border);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+.msg-bubble.outgoing {
+  background: var(--blue);
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+.msg-time { font-size: 10px; color: var(--text-3); margin-top: 4px; }
+.msg-bubble.outgoing .msg-time { color: rgba(255,255,255,0.6); text-align: right; }
+
+.inbox-reply {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  background: var(--white);
+}
+
+.inbox-reply textarea {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  resize: none;
+  height: 42px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.inbox-reply textarea:focus { border-color: var(--blue); }
+
+.btn-send {
+  background: var(--blue);
+  border: none;
+  border-radius: var(--radius-sm);
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.btn-send:hover { background: var(--blue-dark); }
+
+/* ============================================
+   CALENDAR PANEL
+============================================ */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cal-nav-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-2);
+  font-size: 14px;
+  transition: all 0.15s;
+}
+
+.cal-nav-btn:hover { border-color: var(--blue); color: var(--blue); }
+
+.cal-month {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.cal-table {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.cal-days-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: #F9FAFB;
+  border-bottom: 1px solid var(--border);
+}
+
+.cal-day-name {
+  padding: 10px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-2);
+  letter-spacing: 0.5px;
+}
+
+.cal-body {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.cal-cell {
+  min-height: 90px;
+  padding: 8px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.cal-cell:nth-child(7n) { border-right: none; }
+.cal-cell.other-month { background: #FAFAFA; }
+.cal-cell.today { background: var(--blue-light); }
+
+.cal-date {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+  margin-bottom: 4px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.cal-cell.today .cal-date {
+  background: var(--blue);
+  color: #fff;
+}
+
+.cal-event {
+  background: var(--blue-light);
+  border-left: 2px solid var(--blue);
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--blue);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.cal-event:hover { background: var(--blue); color: #fff; }
+
+/* Upcoming appointments list */
+.appt-list-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.upcoming-appt {
+  padding: 12px 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.upcoming-appt:last-child { border-bottom: none; }
+
+.appt-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.appt-person { font-size: 13px; font-weight: 600; color: var(--text); }
+.appt-time-badge { background: var(--blue-light); color: var(--blue); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 100px; }
+.appt-vehicle { font-size: 11px; color: var(--text-2); }
+.appt-phone { font-size: 11px; color: var(--text-3); }
+
+/* ============================================
+   MISC / SHARED
+============================================ */
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-3);
+}
+
+.empty-icon { font-size: 48px; margin-bottom: 1rem; }
+.empty-text { font-size: 14px; }
+
+.filter-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.filter-select {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.filter-select:focus { outline: none; border-color: var(--blue); }
+
+/* SVG Icons inline */
+.icon { display: inline-flex; align-items: center; justify-content: center; }
+</style>
+</head>
+<body>
+
+<!-- ============================================
+     LOGIN PAGE
+============================================ -->
+<div class="login-page" id="login-page">
+  <div class="login-bg"></div>
+  <div class="login-card">
+    <div class="login-logo">
+      <img src="images/cdf-logo.png" alt="CardealerFlow">
+    </div>
+    <h2 class="login-title">Bienvenido de vuelta</h2>
+    <p class="login-sub">Panel de administración — E&S Auto Paisano</p>
+
+    <div class="form-field">
+      <label class="form-label">CORREO ELECTRÓNICO</label>
+      <input type="email" class="form-input" id="login-email" placeholder="eandsautosales@hotmail.com" value="eandsautosales@hotmail.com">
+    </div>
+    <div class="form-field">
+      <label class="form-label">CONTRASEÑA</label>
+      <input type="password" class="form-input" id="login-pass" placeholder="••••••••" value="demo1234">
+    </div>
+    <button class="btn-login" onclick="doLogin()">Entrar al Panel</button>
+    <div class="login-footer">
+      ¿Problemas para entrar? <a href="#">Contactar soporte</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     MAIN APP
+============================================ -->
+<div class="app" id="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <img src="images/cdf-logo.png" alt="CardealerFlow">
+      </div>
+    </div>
+
+    <div class="dealer-badge">
+      <div class="dealer-avatar">E&S</div>
+      <div class="dealer-info">
+        <div class="dealer-name">Auto Paisano</div>
+        <div class="dealer-plan">● Plan Pro</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">PRINCIPAL</div>
+
+      <div class="nav-item active" onclick="showPanel('dashboard')">
+        <span class="nav-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </span>
+        Dashboard
+      </div>
+
+      <div class="nav-item" onclick="showPanel('inventory')">
+        <span class="nav-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        </span>
+        Inventario
+        <span class="nav-badge">24</span>
+      </div>
+
+      <div class="nav-item" onclick="showPanel('inbox')">
+        <span class="nav-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </span>
+        Inbox
+        <span class="nav-badge">8</span>
+      </div>
+
+      <div class="nav-item" onclick="showPanel('calendar')">
+        <span class="nav-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </span>
+        Calendario
+      </div>
+
+      <div class="nav-section-label">CUENTA</div>
+
+      <div class="nav-item" onclick="showPanel('settings')">
+        <span class="nav-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        </span>
+        Configuración
+      </div>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <a href="index.html" target="_blank" class="btn-view-site">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Ver mi sitio web
+      </a>
+      <button class="btn-logout" onclick="doLogout()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Cerrar sesión
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <h2 id="topbar-title">Dashboard</h2>
+        <p id="topbar-sub">Lunes, 13 de Abril 2025</p>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-notif">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <div class="notif-dot"></div>
+        </div>
+        <div class="topbar-user">
+          <div class="user-avatar">ES</div>
+          <span class="user-name">Auto Paisano</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== PANEL: DASHBOARD ======== -->
+    <div class="panel active" id="panel-dashboard">
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0057FF" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          </div>
+          <div class="stat-num">24</div>
+          <div class="stat-label">Carros en venta</div>
+          <div class="stat-change up">↑ 3 esta semana</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="stat-num">8</div>
+          <div class="stat-label">Leads nuevos</div>
+          <div class="stat-change up">↑ 5 hoy</div>
+        </div>
+        <div class="stat-card yellow">
+          <div class="stat-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div class="stat-num">3</div>
+          <div class="stat-label">Citas hoy</div>
+          <div class="stat-change up">Próxima: 2:00 PM</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="stat-num">$47K</div>
+          <div class="stat-label">Ventas del mes</div>
+          <div class="stat-change up">↑ 12% vs mes pasado</div>
+        </div>
+      </div>
+
+      <!-- Main grid -->
+      <div class="dash-grid">
+        <div>
+          <!-- Recent Inventory -->
+          <div class="card" style="margin-bottom:20px">
+            <div class="card-header">
+              <span class="card-title">Inventario Reciente</span>
+              <a class="card-action" onclick="showPanel('inventory')">Ver todo →</a>
+            </div>
+            <div class="card-body" style="padding:0 1.25rem">
+              <div class="recent-car-item">
+                <div class="recent-car-thumb">🚗</div>
+                <div class="recent-car-info">
+                  <div class="recent-car-name">2019 BMW X3 Sport</div>
+                  <div class="recent-car-meta">20,850 mi · RWD · Rebuilt</div>
+                </div>
+                <div>
+                  <div class="recent-car-price">$39,200</div>
+                  <span class="status-pill status-available">Disponible</span>
+                </div>
+              </div>
+              <div class="recent-car-item">
+                <div class="recent-car-thumb">🏎️</div>
+                <div class="recent-car-info">
+                  <div class="recent-car-name">2016 Toyota BRZ</div>
+                  <div class="recent-car-meta">61,475 mi · RWD · Rebuilt</div>
+                </div>
+                <div>
+                  <div class="recent-car-price">$21,690</div>
+                  <span class="status-pill status-pending">Apartado</span>
+                </div>
+              </div>
+              <div class="recent-car-item">
+                <div class="recent-car-thumb">🚙</div>
+                <div class="recent-car-info">
+                  <div class="recent-car-name">2019 Audi S4 Premium</div>
+                  <div class="recent-car-meta">11,475 mi · AWD · Rebuilt</div>
+                </div>
+                <div>
+                  <div class="recent-car-price">$41,400</div>
+                  <span class="status-pill status-available">Disponible</span>
+                </div>
+              </div>
+              <div class="recent-car-item">
+                <div class="recent-car-thumb">🚗</div>
+                <div class="recent-car-info">
+                  <div class="recent-car-name">2019 Fiat 500</div>
+                  <div class="recent-car-meta">45,000 mi · FWD · Rebuilt</div>
+                </div>
+                <div>
+                  <div class="recent-car-price">$21,480</div>
+                  <span class="status-pill status-sold">Vendido</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Latest Leads -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Últimos Leads</span>
+              <a class="card-action" onclick="showPanel('inbox')">Ver inbox →</a>
+            </div>
+            <div class="card-body" style="padding:0 1.25rem">
+              <div class="lead-item">
+                <div class="lead-avatar">MG</div>
+                <div class="lead-info">
+                  <div class="lead-name">María González</div>
+                  <div class="lead-msg">Hola, me interesa el Toyota BRZ, ¿sigue disponible?</div>
+                </div>
+                <div style="text-align:right">
+                  <div class="lead-time">hace 12 min</div>
+                  <span class="status-pill status-new" style="margin-top:4px;display:inline-block">Nuevo</span>
+                </div>
+              </div>
+              <div class="lead-item">
+                <div class="lead-avatar">CR</div>
+                <div class="lead-info">
+                  <div class="lead-name">Carlos Ramírez</div>
+                  <div class="lead-msg">¿Cuánto de enganche piden para el BMW?</div>
+                </div>
+                <div style="text-align:right">
+                  <div class="lead-time">hace 1 hr</div>
+                  <span class="status-pill status-contacted" style="margin-top:4px;display:inline-block">Contactado</span>
+                </div>
+              </div>
+              <div class="lead-item">
+                <div class="lead-avatar">JP</div>
+                <div class="lead-info">
+                  <div class="lead-name">Juan Pérez</div>
+                  <div class="lead-msg">Quiero agendar una cita para ver el Audi</div>
+                </div>
+                <div style="text-align:right">
+                  <div class="lead-time">hace 3 hr</div>
+                  <span class="status-pill status-new" style="margin-top:4px;display:inline-block">Nuevo</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column -->
+        <div>
+          <!-- Upcoming appointments -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Citas de Hoy</span>
+              <a class="card-action" onclick="showPanel('calendar')">Ver calendario →</a>
+            </div>
+            <div class="card-body" style="padding:0 1.25rem">
+              <div class="appt-item">
+                <div class="appt-time-block">
+                  <div class="appt-time">2:00</div>
+                  <div class="appt-ampm">PM</div>
+                </div>
+                <div class="appt-info">
+                  <div class="appt-name">María González</div>
+                  <div class="appt-detail">Toyota BRZ · (615) 555-1234</div>
+                </div>
+              </div>
+              <div class="appt-item">
+                <div class="appt-time-block">
+                  <div class="appt-time">4:00</div>
+                  <div class="appt-ampm">PM</div>
+                </div>
+                <div class="appt-info">
+                  <div class="appt-name">Roberto Lira</div>
+                  <div class="appt-detail">BMW X3 · (615) 555-5678</div>
+                </div>
+              </div>
+              <div class="appt-item">
+                <div class="appt-time-block">
+                  <div class="appt-time">5:30</div>
+                  <div class="appt-ampm">PM</div>
+                </div>
+                <div class="appt-info">
+                  <div class="appt-name">Ana Flores</div>
+                  <div class="appt-detail">Audi S4 · (615) 555-9012</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick actions -->
+          <div class="card" style="margin-top:20px">
+            <div class="card-header">
+              <span class="card-title">Acciones Rápidas</span>
+            </div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:8px">
+              <button class="btn-primary" style="width:100%;justify-content:center" onclick="openModal()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Agregar Vehículo
+              </button>
+              <button class="btn-secondary" style="width:100%;justify-content:center" onclick="showPanel('inbox')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Ver Leads (8 nuevos)
+              </button>
+              <button class="btn-secondary" style="width:100%;justify-content:center" onclick="showPanel('calendar')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Agendar Cita
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== PANEL: INVENTORY ======== -->
+    <div class="panel" id="panel-inventory">
+
+      <!-- Scraper tool -->
+      <div class="scraper-card">
+        <div class="scraper-icon">🤖</div>
+        <div class="scraper-text">
+          <div class="scraper-title">Importar inventario automáticamente</div>
+          <div class="scraper-desc">Pega la URL de tu sitio web actual y extraemos todos tus carros en segundos</div>
+          <div class="scraper-input-row">
+            <input class="scraper-input" type="url" placeholder="https://autopaisano.com" id="scraper-url">
+            <button class="btn-scrape" onclick="simulateScrape()">
+              <span id="scrape-btn-text">⚡ Importar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="inv-toolbar">
+        <div class="inv-search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Buscar por marca, modelo, año...">
+        </div>
+        <div style="display:flex;gap:8px;margin-left:auto">
+          <select class="filter-select">
+            <option>Todos los estados</option>
+            <option>Disponible</option>
+            <option>Apartado</option>
+            <option>Vendido</option>
+          </select>
+          <button class="btn-primary" onclick="openModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Agregar Vehículo
+          </button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>FOTO</th>
+              <th>VEHÍCULO</th>
+              <th>AÑO</th>
+              <th>MILLAJE</th>
+              <th>PRECIO</th>
+              <th>ESTADO</th>
+              <th>ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody id="inv-table-body">
+            <!-- Rows rendered by JS -->
+          </tbody>
+        </table>
+        <div class="table-footer">
+          <span class="table-count">Mostrando 7 de 24 vehículos</span>
+          <div class="pagination">
+            <div class="page-btn active">1</div>
+            <div class="page-btn">2</div>
+            <div class="page-btn">3</div>
+            <div class="page-btn">›</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== PANEL: INBOX ======== -->
+    <div class="panel" id="panel-inbox">
+      <div class="inbox-grid">
+        <!-- Lead list -->
+        <div class="inbox-list">
+          <div class="inbox-list-header">
+            <span class="inbox-list-title">Conversaciones</span>
+            <span class="unread-count">8 nuevos</span>
+          </div>
+          <div class="inbox-lead unread active" onclick="selectLead(this,'María González','MG','(615) 555-1234')">
+            <div class="inbox-lead-avatar">MG</div>
+            <div class="inbox-lead-info">
+              <div class="inbox-lead-name">María González</div>
+              <div class="inbox-lead-preview">Hola, me interesa el Toyota BRZ...</div>
+              <div class="inbox-lead-time">hace 12 min · WhatsApp</div>
+            </div>
+          </div>
+          <div class="inbox-lead unread" onclick="selectLead(this,'Carlos Ramírez','CR','(615) 555-5678')">
+            <div class="inbox-lead-avatar" style="background:#FEF9C3;color:#B45309">CR</div>
+            <div class="inbox-lead-info">
+              <div class="inbox-lead-name">Carlos Ramírez</div>
+              <div class="inbox-lead-preview">¿Cuánto de enganche piden...?</div>
+              <div class="inbox-lead-time">hace 1 hr · Web Chat</div>
+            </div>
+          </div>
+          <div class="inbox-lead" onclick="selectLead(this,'Juan Pérez','JP','(615) 555-9012')">
+            <div class="inbox-lead-avatar" style="background:#DCFCE7;color:#15803D">JP</div>
+            <div class="inbox-lead-info">
+              <div class="inbox-lead-name">Juan Pérez</div>
+              <div class="inbox-lead-preview">Quiero agendar una cita...</div>
+              <div class="inbox-lead-time">hace 3 hr · Email</div>
+            </div>
+          </div>
+          <div class="inbox-lead" onclick="selectLead(this,'Ana Flores','AF','(615) 555-3456')">
+            <div class="inbox-lead-avatar" style="background:#FEE2E2;color:#B91C1C">AF</div>
+            <div class="inbox-lead-info">
+              <div class="inbox-lead-name">Ana Flores</div>
+              <div class="inbox-lead-preview">¿Tienen el Audi S4 todavía?</div>
+              <div class="inbox-lead-time">ayer · WhatsApp</div>
+            </div>
+          </div>
+          <div class="inbox-lead" onclick="selectLead(this,'Roberto Lira','RL','(615) 555-7890')">
+            <div class="inbox-lead-avatar" style="background:#F3E8FF;color:#7C3AED">RL</div>
+            <div class="inbox-lead-info">
+              <div class="inbox-lead-name">Roberto Lira</div>
+              <div class="inbox-lead-preview">Gracias, voy el sábado</div>
+              <div class="inbox-lead-time">ayer · Web Chat</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conversation detail -->
+        <div class="inbox-detail">
+          <div class="inbox-detail-header">
+            <div class="inbox-detail-avatar" id="detail-avatar">MG</div>
+            <div>
+              <div class="inbox-detail-name" id="detail-name">María González</div>
+              <div class="inbox-detail-contact" id="detail-contact">(615) 555-1234 · WhatsApp · Interesada en: Toyota BRZ</div>
+            </div>
+            <div class="inbox-actions">
+              <button class="btn-icon" title="Llamar">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.5 12.1a19.79 19.79 0 0 1-3-8.63A2 2 0 0 1 3.46 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </button>
+              <span class="status-pill status-new" style="font-size:11px;padding:5px 12px">Nuevo Lead</span>
+            </div>
+          </div>
+
+          <div class="inbox-messages" id="chat-messages">
+            <div class="msg-bubble incoming">
+              Hola! Vi su inventario en la página y me interesa el Toyota BRZ 2016. ¿Sigue disponible?
+              <div class="msg-time">hoy, 2:48 PM</div>
+            </div>
+            <div class="msg-bubble outgoing">
+              ¡Hola María! Claro que sí, el BRZ sigue disponible 😊 ¿Le gustaría venir a verlo? Estamos en 2115 Nolensville Pike.
+              <div class="msg-time">hoy, 2:51 PM · Auto Paisano</div>
+            </div>
+            <div class="msg-bubble incoming">
+              ¡Qué bueno! ¿Cuánto de enganche piden? No tengo mucho crédito...
+              <div class="msg-time">hoy, 2:53 PM</div>
+            </div>
+            <div class="msg-bubble outgoing">
+              No se preocupe, somos Buy Here Pay Here, ¡le financiamos sin importar el crédito! El enganche parte desde $500. ¿Cuándo puede venir?
+              <div class="msg-time">hoy, 2:55 PM · Auto Paisano</div>
+            </div>
+            <div class="msg-bubble incoming">
+              Wow qué bien! ¿Puedo ir este sábado a las 11am?
+              <div class="msg-time">hoy, 3:02 PM</div>
+            </div>
+          </div>
+
+          <div class="inbox-reply">
+            <textarea id="reply-input" placeholder="Escribe una respuesta..."></textarea>
+            <button class="btn-send" onclick="sendReply()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== PANEL: CALENDAR ======== -->
+    <div class="panel" id="panel-calendar">
+      <div class="calendar-grid">
+        <div>
+          <div class="calendar-header">
+            <div class="calendar-nav">
+              <button class="cal-nav-btn">‹</button>
+              <span class="cal-month">Abril 2025</span>
+              <button class="cal-nav-btn">›</button>
+            </div>
+            <button class="btn-primary" style="font-size:14px;padding:9px 16px">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Nueva Cita
+            </button>
+          </div>
+          <div class="cal-table">
+            <div class="cal-days-header">
+              <div class="cal-day-name">DOM</div>
+              <div class="cal-day-name">LUN</div>
+              <div class="cal-day-name">MAR</div>
+              <div class="cal-day-name">MIÉ</div>
+              <div class="cal-day-name">JUE</div>
+              <div class="cal-day-name">VIE</div>
+              <div class="cal-day-name">SÁB</div>
+            </div>
+            <div class="cal-body" id="cal-body">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Upcoming list -->
+        <div class="card">
+          <div class="appt-list-header">
+            <span class="card-title">Próximas Citas</span>
+            <span class="status-pill status-new">3 hoy</span>
+          </div>
+          <div class="upcoming-appt">
+            <div class="appt-header-row">
+              <span class="appt-person">María González</span>
+              <span class="appt-time-badge">2:00 PM</span>
+            </div>
+            <div class="appt-vehicle">Toyota BRZ 2016</div>
+            <div class="appt-phone">(615) 555-1234</div>
+          </div>
+          <div class="upcoming-appt">
+            <div class="appt-header-row">
+              <span class="appt-person">Roberto Lira</span>
+              <span class="appt-time-badge">4:00 PM</span>
+            </div>
+            <div class="appt-vehicle">BMW X3 Sport 2019</div>
+            <div class="appt-phone">(615) 555-5678</div>
+          </div>
+          <div class="upcoming-appt">
+            <div class="appt-header-row">
+              <span class="appt-person">Ana Flores</span>
+              <span class="appt-time-badge">5:30 PM</span>
+            </div>
+            <div class="appt-vehicle">Audi S4 Premium 2019</div>
+            <div class="appt-phone">(615) 555-9012</div>
+          </div>
+          <div style="padding:1rem 1.25rem">
+            <button class="btn-secondary" style="width:100%;justify-content:center;font-size:13px">
+              Ver todo el mes →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== PANEL: SETTINGS ======== -->
+    <div class="panel" id="panel-settings">
+      <div style="max-width:640px">
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><span class="card-title">Información del Dealer</span></div>
+          <div class="card-body">
+            <div class="form-grid" style="margin-bottom:1rem">
+              <div class="form-field">
+                <label class="form-label">NOMBRE DEL DEALER</label>
+                <input class="form-input" value="E&S Auto Paisano">
+              </div>
+              <div class="form-field">
+                <label class="form-label">TELÉFONO</label>
+                <input class="form-input" value="(615) 255-7700">
+              </div>
+              <div class="form-field">
+                <label class="form-label">EMAIL</label>
+                <input class="form-input" value="eandsautosales@hotmail.com">
+              </div>
+              <div class="form-field">
+                <label class="form-label">DIRECCIÓN</label>
+                <input class="form-input" value="2115 Nolensville Pike, Nashville TN">
+              </div>
+            </div>
+            <button class="btn-primary">Guardar Cambios</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">WhatsApp & Notificaciones</span></div>
+          <div class="card-body">
+            <div class="form-field">
+              <label class="form-label">NÚMERO DE WHATSAPP</label>
+              <input class="form-input" value="+1 (615) 255-7700">
+            </div>
+            <div class="form-field">
+              <label class="form-label">EMAIL PARA NOTIFICACIONES DE LEADS</label>
+              <input class="form-input" value="eandsautosales@hotmail.com">
+            </div>
+            <button class="btn-primary">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ============================================
+     MODAL — Add Vehicle
+============================================ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Agregar Vehículo</span>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid" style="margin-bottom:1rem">
+        <div class="form-field">
+          <label class="form-label">AÑO</label>
+          <input class="form-input" type="number" placeholder="2019" min="1990" max="2025">
+        </div>
+        <div class="form-field">
+          <label class="form-label">MARCA</label>
+          <select class="form-input">
+            <option>Toyota</option><option>Honda</option><option>Ford</option>
+            <option>BMW</option><option>Audi</option><option>Chevrolet</option>
+            <option>Nissan</option><option>Hyundai</option><option>Kia</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">MODELO</label>
+          <input class="form-input" placeholder="Camry, Civic, F-150...">
+        </div>
+        <div class="form-field">
+          <label class="form-label">TRIM / VERSIÓN</label>
+          <input class="form-input" placeholder="LE, Sport, Premium...">
+        </div>
+        <div class="form-field">
+          <label class="form-label">MILLAJE</label>
+          <input class="form-input" type="number" placeholder="45,000">
+        </div>
+        <div class="form-field">
+          <label class="form-label">PRECIO</label>
+          <input class="form-input" type="number" placeholder="$12,500">
+        </div>
+        <div class="form-field">
+          <label class="form-label">COLOR EXTERIOR</label>
+          <input class="form-input" placeholder="Negro, Blanco, Rojo...">
+        </div>
+        <div class="form-field">
+          <label class="form-label">TRANSMISIÓN</label>
+          <select class="form-input">
+            <option>Automático</option>
+            <option>Manual</option>
+            <option>CVT</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">TRACCIÓN</label>
+          <select class="form-input">
+            <option>FWD</option><option>RWD</option><option>AWD</option><option>4WD</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">TIPO DE TÍTULO</label>
+          <select class="form-input">
+            <option>Rebuilt Title</option>
+            <option>Clean Title</option>
+            <option>Salvage Title</option>
+          </select>
+        </div>
+        <div class="form-field form-full">
+          <label class="form-label">VIN</label>
+          <input class="form-input" placeholder="1HGBH41JXMN109186">
+        </div>
+        <div class="form-field form-full">
+          <label class="form-label">DESCRIPCIÓN</label>
+          <textarea class="form-input" rows="3" placeholder="Describe el vehículo, condición, características especiales..."></textarea>
+        </div>
+        <div class="form-field form-full">
+          <label class="form-label">FOTOS DEL VEHÍCULO</label>
+          <div class="upload-area" onclick="document.getElementById('file-input').click()">
+            <div class="upload-icon">📷</div>
+            <div class="upload-text">
+              <span>Haz clic para subir</span> o arrastra las fotos aquí<br>
+              <small style="color:#9CA3AF">PNG, JPG hasta 10MB cada una · Mínimo 3 fotos recomendadas</small>
+            </div>
+            <input type="file" id="file-input" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)">
+          </div>
+          <div class="upload-photos-grid" id="photos-preview"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn-primary" onclick="saveVehicle()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Guardar Vehículo
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     JAVASCRIPT
+============================================ -->
+<script>
+/* ---- DATA ---- */
+const inventory = [
+  { id:1, year:2019, make:'BMW', model:'X3 Sport package', miles:20850, price:39200, type:'SUV', status:'available', drivetrain:'RWD', engine:'4-Cil', icon:'🚙' },
+  { id:2, year:2016, make:'Toyota', model:'BRZ', miles:61475, price:21690, type:'Coupe', status:'pending', drivetrain:'RWD', engine:'4-Cil Turbo', icon:'🏎️' },
+  { id:3, year:2019, make:'Audi', model:'S4 Premium Plus', miles:11475, price:41400, type:'Sedan', status:'available', drivetrain:'AWD', engine:'4-Cil Turbo', icon:'🚗' },
+  { id:4, year:2019, make:'Fiat', model:'500', miles:45000, price:21480, type:'Coupe', status:'sold', drivetrain:'FWD', engine:'4-Cil', icon:'🚗' },
+  { id:5, year:2018, make:'Ford', model:'Mustang GT', miles:38200, price:28900, type:'Coupe', status:'available', drivetrain:'RWD', engine:'V8', icon:'🏎️' },
+  { id:6, year:2020, make:'Honda', model:'Pilot EX-L', miles:29500, price:26500, type:'SUV', status:'available', drivetrain:'AWD', engine:'V6', icon:'🚙' },
+  { id:7, year:2017, make:'Chevrolet', model:'Silverado 1500', miles:72000, price:22400, type:'Pickup', status:'pending', drivetrain:'4WD', engine:'V8', icon:'🛻' },
+];
+
+const statusMap = {
+  available: { label:'Disponible', cls:'status-available' },
+  pending:   { label:'Apartado',   cls:'status-pending' },
+  sold:      { label:'Vendido',    cls:'status-sold' },
+};
+
+/* ---- LOGIN ---- */
+function doLogin() {
+  const email = document.getElementById('login-email').value;
+  const pass  = document.getElementById('login-pass').value;
+  if (!email || !pass) { alert('Por favor llena todos los campos'); return; }
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('app').classList.add('visible');
+  renderInventory();
+  renderCalendar();
+}
+
+function doLogout() {
+  document.getElementById('app').classList.remove('visible');
+  document.getElementById('login-page').style.display = 'flex';
+}
+
+/* ---- NAVIGATION ---- */
+const panelTitles = {
+  dashboard: ['Dashboard', 'Resumen de tu negocio'],
+  inventory:  ['Inventario', 'Gestiona tus vehículos'],
+  inbox:      ['Inbox', 'Mensajes y leads'],
+  calendar:   ['Calendario', 'Citas y agenda'],
+  settings:   ['Configuración', 'Datos de tu dealer'],
+};
+
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick') && n.getAttribute('onclick').includes(name)) n.classList.add('active');
+  });
+  const t = panelTitles[name] || [name, ''];
+  document.getElementById('topbar-title').textContent = t[0];
+  document.getElementById('topbar-sub').textContent   = t[1];
+}
+
+/* ---- INVENTORY TABLE ---- */
+function renderInventory() {
+  const tbody = document.getElementById('inv-table-body');
+  tbody.innerHTML = inventory.map(c => {
+    const st = statusMap[c.status];
+    return `
+      <tr>
+        <td><div class="car-thumb-cell">${c.icon}</div></td>
+        <td>
+          <div class="car-name-cell">${c.year} ${c.make} ${c.model}</div>
+          <div class="car-sub-cell">${c.drivetrain} · ${c.engine} · Rebuilt</div>
+        </td>
+        <td>${c.year}</td>
+        <td>${c.miles.toLocaleString()} mi</td>
+        <td class="price-cell">$${c.price.toLocaleString()}</td>
+        <td><span class="status-pill ${st.cls}">${st.label}</span></td>
+        <td>
+          <div class="action-menu">
+            <button class="btn-icon" title="Editar" onclick="openModal()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="btn-icon danger" title="Eliminar" onclick="if(confirm('¿Eliminar este vehículo?')){}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+/* ---- MODAL ---- */
+function openModal() {
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+function saveVehicle() {
+  alert('✅ Vehículo guardado exitosamente.\n\nEn la versión con backend esto se guardará en la base de datos y aparecerá en el sitio web del dealer automáticamente.');
+  closeModal();
+}
+
+/* ---- PHOTO UPLOAD PREVIEW ---- */
+function handleFiles(files) {
+  const preview = document.getElementById('photos-preview');
+  preview.innerHTML = '';
+  Array.from(files).slice(0,8).forEach((file, i) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      preview.innerHTML += `
+        <div class="upload-photo-thumb">
+          <img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+          <button class="upload-remove" onclick="this.parentNode.remove()">×</button>
+        </div>
+      `;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ---- SCRAPER SIMULATION ---- */
+function simulateScrape() {
+  const url = document.getElementById('scraper-url').value;
+  if (!url) { alert('Por favor ingresa una URL'); return; }
+  const btn = document.getElementById('scrape-btn-text');
+  btn.textContent = '⏳ Importando...';
+  setTimeout(() => {
+    btn.textContent = '✅ ¡24 carros importados!';
+    setTimeout(() => { btn.textContent = '⚡ Importar'; }, 3000);
+    alert(`✅ Scraping completado!\n\n24 vehículos importados desde ${url}\n\nEn la versión con backend, todos los carros aparecerán automáticamente en el inventario con sus fotos, precios y descripción.`);
+  }, 2500);
+}
+
+/* ---- INBOX ---- */
+function selectLead(el, name, initials, phone) {
+  document.querySelectorAll('.inbox-lead').forEach(l => l.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('detail-avatar').textContent = initials;
+  document.getElementById('detail-name').textContent = name;
+  document.getElementById('detail-contact').textContent = phone + ' · Interesado en: Ver inventario';
+}
+
+function sendReply() {
+  const input = document.getElementById('reply-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const msgs = document.getElementById('chat-messages');
+  msgs.innerHTML += `
+    <div class="msg-bubble outgoing">
+      ${text}
+      <div class="msg-time">ahora · Auto Paisano</div>
+    </div>
+  `;
+  input.value = '';
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+/* ---- CALENDAR ---- */
+function renderCalendar() {
+  const events = {
+    13: ['2:00 PM - María G.', '4:00 PM - Roberto L.', '5:30 PM - Ana F.'],
+    15: ['10:00 AM - Pedro M.'],
+    17: ['3:00 PM - Luis R.', '5:00 PM - Carmen V.'],
+    20: ['11:00 AM - Rosa H.'],
+  };
+
+  const body = document.getElementById('cal-body');
+  if (!body) return;
+  body.innerHTML = '';
+
+  const year = 2025, month = 3;
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  for (let i = 0; i < firstDay; i++) {
+    const d = daysInMonth - firstDay + i + 1 - (new Date(year, month - 1, 0).getDate() - (daysInMonth - firstDay + i));
+    body.innerHTML += `<div class="cal-cell other-month"><div class="cal-date" style="color:#D1D5DB">${new Date(year, month - 1, 0).getDate() - firstDay + i + 1}</div></div>`;
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isToday = d === 13;
+    const evs = events[d] || [];
+    body.innerHTML += `
+      <div class="cal-cell ${isToday ? 'today' : ''}">
+        <div class="cal-date">${d}</div>
+        ${evs.slice(0,2).map(e => `<div class="cal-event">${e}</div>`).join('')}
+        ${evs.length > 2 ? `<div style="font-size:10px;color:#9CA3AF">+${evs.length - 2} más</div>` : ''}
+      </div>
+    `;
+  }
+
+  const remaining = 42 - firstDay - daysInMonth;
+  for (let d = 1; d <= remaining; d++) {
+    body.innerHTML += `<div class="cal-cell other-month"><div class="cal-date" style="color:#D1D5DB">${d}</div></div>`;
+  }
+}
+
+/* ---- Close modal on overlay click ---- */
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+</script>
+
+</body>
+</html>
