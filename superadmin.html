@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CardealerFlow — Super Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #0057FF;
+  --blue-dark: #003DB5;
+  --blue-light: #EBF2FF;
+  --navy: #080D1E;
+  --navy-2: #0D1530;
+  --sidebar-w: 230px;
+  --bg: #F4F6FA;
+  --white: #FFFFFF;
+  --border: #E5E7EB;
+  --text: #111827;
+  --text-2: #6B7280;
+  --text-3: #9CA3AF;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --purple: #8B5CF6;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+/* ── LOGIN ── */
+.login-page {
+  min-height: 100vh;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-page::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(0,87,255,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.login-card {
+  position: relative;
+  z-index: 2;
+  background: var(--white);
+  border-radius: 20px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+}
+
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0.5rem;
+}
+
+.login-brand-icon {
+  width: 38px;
+  height: 38px;
+  background: var(--blue);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  color: #fff;
+}
+
+.login-brand-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--text);
+}
+
+.login-super-badge {
+  display: inline-block;
+  background: rgba(139,92,246,0.1);
+  border: 1px solid rgba(139,92,246,0.3);
+  border-radius: 100px;
+  padding: 3px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--purple);
+  letter-spacing: 0.5px;
+  margin-bottom: 1.5rem;
+}
+
+.login-title { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 0.25rem; }
+.login-sub { font-size: 13px; color: var(--text-2); margin-bottom: 2rem; }
+
+.form-label { display: block; font-size: 11px; font-weight: 700; color: var(--text-2); letter-spacing: 0.5px; margin-bottom: 6px; }
+.form-input { width: 100%; border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; font-family: 'Barlow', sans-serif; font-size: 15px; color: var(--text); background: #FAFAFA; margin-bottom: 1rem; transition: border-color 0.2s; }
+.form-input:focus { outline: none; border-color: var(--blue); background: var(--white); }
+
+.btn-login { width: 100%; background: var(--blue); color: #fff; border: none; border-radius: var(--radius-sm); padding: 13px; font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-top: 0.25rem; }
+.btn-login:hover { background: var(--blue-dark); }
+
+/* ── APP LAYOUT ── */
+.app { display: none; min-height: 100vh; }
+.app.visible { display: flex; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--navy);
+  min-height: 100vh;
+  position: fixed;
+  top: 0; left: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+.sidebar-header { padding: 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+
+.sidebar-logo { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.sidebar-logo-icon { width: 34px; height: 34px; background: var(--blue); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 12px; color: #fff; }
+.sidebar-logo-text { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 16px; color: #fff; }
+
+.super-badge { display: inline-block; background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3); border-radius: 100px; padding: 3px 10px; font-size: 10px; font-weight: 700; color: #A78BFA; letter-spacing: 0.5px; }
+
+.sidebar-admin-info { background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2); border-radius: 8px; padding: 10px 12px; margin: 1rem 1.25rem 0; }
+.admin-name { font-size: 13px; font-weight: 600; color: #fff; }
+.admin-role { font-size: 10px; color: #A78BFA; font-weight: 600; }
+
+.sidebar-nav { flex: 1; padding: 1rem 0.75rem; display: flex; flex-direction: column; gap: 2px; }
+.nav-section-label { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.25); letter-spacing: 1px; padding: 0.75rem 0.5rem 0.25rem; }
+
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.15s; color: rgba(255,255,255,0.5); font-size: 14px; font-weight: 500; }
+.nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.9); }
+.nav-item.active { background: rgba(0,87,255,0.2); color: #fff; }
+.nav-item.active .nav-icon svg { color: var(--blue); }
+.nav-icon { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.nav-badge { margin-left: auto; background: var(--danger); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 100px; }
+.nav-badge.blue { background: var(--blue); }
+.nav-badge.green { background: var(--success); }
+
+.sidebar-bottom { padding: 1rem 0.75rem; border-top: 1px solid rgba(255,255,255,0.06); }
+.btn-logout { display: flex; align-items: center; gap: 8px; width: 100%; background: none; border: none; padding: 10px 12px; color: rgba(255,255,255,0.35); font-size: 13px; font-weight: 500; cursor: pointer; border-radius: var(--radius-sm); transition: all 0.2s; font-family: 'Barlow', sans-serif; }
+.btn-logout:hover { color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.05); }
+
+/* ── MAIN ── */
+.main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; }
+
+.topbar { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 40; }
+.topbar-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; }
+.topbar-sub { font-size: 12px; color: var(--text-2); }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+
+.mrr-pill { background: linear-gradient(135deg, var(--blue), var(--purple)); color: #fff; padding: 6px 16px; border-radius: 100px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; }
+
+/* ── PANELS ── */
+.panel { display: none; padding: 2rem; }
+.panel.active { display: block; }
+
+/* ── STAT CARDS ── */
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 2rem; }
+
+.stat-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; position: relative; overflow: hidden; }
+.stat-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--blue); }
+.stat-card.green::after { background: var(--success); }
+.stat-card.yellow::after { background: var(--warning); }
+.stat-card.purple::after { background: var(--purple); }
+
+.stat-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); background: var(--blue-light); display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; font-size: 16px; }
+.stat-card.green .stat-icon { background: #DCFCE7; }
+.stat-card.yellow .stat-icon { background: #FFFBEB; }
+.stat-card.purple .stat-icon { background: #F3E8FF; }
+
+.stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 800; color: var(--text); line-height: 1; margin-bottom: 4px; }
+.stat-label { font-size: 12px; color: var(--text-2); font-weight: 500; }
+.stat-change { font-size: 11px; font-weight: 600; margin-top: 6px; }
+.stat-change.up { color: var(--success); }
+
+/* ── CARDS ── */
+.card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.card-header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; }
+.card-body { padding: 1.25rem; }
+.card-action { font-size: 12px; color: var(--blue); font-weight: 600; cursor: pointer; border: none; background: none; font-family: 'Barlow', sans-serif; }
+
+/* ── BUTTONS ── */
+.btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--blue); color: #fff; border: none; border-radius: var(--radius-sm); padding: 10px 18px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+.btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+.btn-primary.purple { background: var(--purple); }
+.btn-primary.purple:hover { background: #7C3AED; }
+.btn-primary.green { background: var(--success); }
+.btn-primary.sm { padding: 7px 14px; font-size: 13px; }
+.btn-primary.danger { background: var(--danger); }
+
+.btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: var(--white); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 18px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
+.btn-secondary.sm { padding: 7px 14px; font-size: 13px; }
+
+/* ── DEALER TABLE ── */
+.table-wrap { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+table { width: 100%; border-collapse: collapse; }
+thead { background: #F9FAFB; border-bottom: 1px solid var(--border); }
+th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-2); letter-spacing: 0.5px; white-space: nowrap; }
+td { padding: 13px 14px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #FAFAFA; }
+
+.dealer-name-cell { font-weight: 700; font-size: 13px; }
+.dealer-url-cell { font-size: 11px; color: var(--text-3); }
+
+.plan-badge { padding: 3px 10px; border-radius: 100px; font-size: 10px; font-weight: 700; }
+.plan-starter { background: #F3F4F6; color: #6B7280; }
+.plan-pro { background: var(--blue-light); color: var(--blue); }
+.plan-premium { background: #F3E8FF; color: #7C3AED; }
+
+.status-pill { padding: 3px 10px; border-radius: 100px; font-size: 10px; font-weight: 700; }
+.status-active { background: #DCFCE7; color: #15803D; }
+.status-inactive { background: #FEF2F2; color: #B91C1C; }
+.status-trial { background: #FFFBEB; color: #B45309; }
+.status-expiring { background: #FEF3C7; color: #D97706; }
+
+.action-row { display: flex; gap: 6px; align-items: center; }
+
+.btn-icon { width: 30px; height: 30px; border-radius: 6px; border: 1px solid var(--border); background: var(--white); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-2); transition: all 0.15s; }
+.btn-icon:hover { border-color: var(--blue); color: var(--blue); }
+.btn-icon.danger:hover { border-color: var(--danger); color: var(--danger); }
+.btn-icon.success:hover { border-color: var(--success); color: var(--success); }
+
+.table-footer { padding: 12px 1.25rem; background: #F9FAFB; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.table-count { font-size: 12px; color: var(--text-2); }
+
+/* ── MODALS ── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 200; display: none; align-items: center; justify-content: center; padding: 1rem; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--white); border-radius: 16px; width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto; box-shadow: 0 30px 80px rgba(0,0,0,0.3); }
+.modal-lg { max-width: 800px; }
+.modal-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--white); z-index: 1; }
+.modal-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; }
+.modal-close { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: none; cursor: pointer; font-size: 18px; color: var(--text-2); display: flex; align-items: center; justify-content: center; }
+.modal-body { padding: 1.5rem; }
+.modal-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+
+/* ── FORM ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-full { grid-column: 1 / -1; }
+.form-field { margin-bottom: 0; }
+.form-input-sm { width: 100%; border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; font-family: 'Barlow', sans-serif; font-size: 14px; color: var(--text); background: #FAFAFA; transition: border-color 0.2s; }
+.form-input-sm:focus { outline: none; border-color: var(--blue); background: var(--white); }
+
+/* ── COLOR PICKER ── */
+.color-row { display: flex; align-items: center; gap: 10px; }
+.color-preview { width: 36px; height: 36px; border-radius: 8px; border: 2px solid var(--border); flex-shrink: 0; cursor: pointer; }
+input[type=color] { width: 36px; height: 36px; padding: 2px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer; }
+
+/* ── TEMPLATE CARDS ── */
+.templates-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 1rem; }
+.template-card { border: 2px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: all 0.2s; }
+.template-card:hover { border-color: var(--blue); }
+.template-card.selected { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,87,255,0.15); }
+.template-preview { height: 100px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+.template-name { padding: 8px 12px; font-size: 12px; font-weight: 700; color: var(--text); border-top: 1px solid var(--border); }
+.template-check { display: none; position: absolute; top: 8px; right: 8px; width: 20px; height: 20px; border-radius: 50%; background: var(--blue); color: #fff; font-size: 11px; align-items: center; justify-content: center; }
+.template-card.selected .template-check { display: flex; }
+
+/* ── SCRAPER SECTION ── */
+.scraper-box { background: linear-gradient(135deg, #080D1E, #111827); border: 1px solid rgba(0,87,255,0.3); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem; }
+.scraper-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.scraper-desc { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 12px; }
+.scraper-row { display: flex; gap: 8px; }
+.scraper-input { flex: 1; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm); padding: 10px 14px; color: #fff; font-family: 'Barlow', sans-serif; font-size: 13px; }
+.scraper-input::placeholder { color: rgba(255,255,255,0.35); }
+.scraper-input:focus { outline: none; border-color: var(--blue); }
+.btn-scrape { background: var(--blue); color: #fff; border: none; border-radius: var(--radius-sm); padding: 10px 18px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+.btn-scrape:hover { background: var(--blue-dark); }
+
+.scraper-result { background: #DCFCE7; border: 1px solid #86EFAC; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #15803D; font-weight: 600; margin-top: 10px; display: none; }
+
+/* ── REVENUE CHART (simple bars) ── */
+.rev-chart { display: flex; align-items: flex-end; gap: 8px; height: 120px; padding: 0 4px; }
+.rev-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; }
+.rev-bar { width: 100%; border-radius: 6px 6px 0 0; background: var(--blue-light); position: relative; transition: all 0.3s; min-height: 8px; }
+.rev-bar.current { background: var(--blue); }
+.rev-bar-label { font-size: 10px; color: var(--text-3); }
+.rev-bar-val { font-size: 10px; font-weight: 700; color: var(--text-2); }
+
+/* ── ALERT ITEMS ── */
+.alert-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.alert-item:last-child { border-bottom: none; }
+.alert-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.alert-dot.red { background: var(--danger); }
+.alert-dot.yellow { background: var(--warning); }
+.alert-dot.blue { background: var(--blue); }
+.alert-text { flex: 1; font-size: 13px; color: var(--text); }
+.alert-sub { font-size: 11px; color: var(--text-2); }
+.alert-time { font-size: 11px; color: var(--text-3); }
+
+/* ── ACTIVITY LOG ── */
+.log-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.log-item:last-child { border-bottom: none; }
+.log-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.log-content { flex: 1; }
+.log-text { font-size: 13px; color: var(--text); }
+.log-time { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+
+/* ── TOGGLE SWITCH ── */
+.toggle-wrap { display: flex; align-items: center; gap: 10px; }
+.toggle { position: relative; width: 44px; height: 24px; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; inset: 0; background: #D1D5DB; border-radius: 100px; cursor: pointer; transition: 0.3s; }
+.toggle-slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: 0.3s; }
+.toggle input:checked + .toggle-slider { background: var(--success); }
+.toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
+.toggle-label { font-size: 13px; font-weight: 600; color: var(--text); }
+
+/* ── SEARCH BAR ── */
+.search-bar { display: flex; align-items: center; gap: 8px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 14px; flex: 1; max-width: 280px; }
+.search-bar input { border: none; background: none; font-family: 'Barlow', sans-serif; font-size: 14px; color: var(--text); flex: 1; outline: none; }
+
+/* ── DEALER DETAIL ── */
+.dealer-profile { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.profile-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+.profile-label { font-size: 11px; font-weight: 700; color: var(--text-2); letter-spacing: 0.5px; margin-bottom: 4px; }
+.profile-value { font-size: 15px; font-weight: 600; color: var(--text); }
+
+/* ── ANNOUNCEMENT ── */
+.announce-card { background: linear-gradient(135deg, #080D1E, var(--navy-2)); border: 1px solid rgba(0,87,255,0.25); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
+.announce-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+.announce-desc { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 1rem; }
+.announce-textarea { width: 100%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm); padding: 12px 14px; color: #fff; font-family: 'Barlow', sans-serif; font-size: 13px; resize: vertical; min-height: 80px; }
+.announce-textarea::placeholder { color: rgba(255,255,255,0.3); }
+.announce-textarea:focus { outline: none; border-color: var(--blue); }
+
+/* ── TOOLTIP ── */
+.tooltip { position: relative; }
+.tooltip::after { content: attr(data-tip); position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%); background: #1F2937; color: #fff; font-size: 11px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.tooltip:hover::after { opacity: 1; }
+
+/* ── MINI SITE PREVIEW ── */
+.site-preview { width: 100%; aspect-ratio: 16/9; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); background: #1a1a1a; display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 1rem; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════
+     LOGIN
+════════════════════════════════ -->
+<div class="login-page" id="login-page">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="login-brand-icon">CDF</div>
+      <span class="login-brand-name">CardealerFlow</span>
+    </div>
+    <div class="login-super-badge">● SUPER ADMIN</div>
+    <h2 class="login-title">Panel Maestro</h2>
+    <p class="login-sub">Solo Diego tiene acceso a este panel</p>
+    <label class="form-label">EMAIL</label>
+    <input type="email" class="form-input" id="l-email" value="diego@cardealerflow.com">
+    <label class="form-label">CONTRASEÑA</label>
+    <input type="password" class="form-input" id="l-pass" value="••••••••">
+    <button class="btn-login" onclick="doLogin()">Entrar al Super Admin</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     APP
+════════════════════════════════ -->
+<div class="app" id="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">CDF</div>
+        <span class="sidebar-logo-text">CardealerFlow</span>
+      </div>
+      <div class="super-badge">● SUPER ADMIN</div>
+    </div>
+
+    <div class="sidebar-admin-info">
+      <div class="admin-name">Diego Limón</div>
+      <div class="admin-role">Founder & Owner</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">OVERVIEW</div>
+
+      <div class="nav-item active" onclick="showPanel('dashboard')">
+        <span class="nav-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+        Dashboard
+      </div>
+
+      <div class="nav-item" onclick="showPanel('dealers')">
+        <span class="nav-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+        Dealers
+        <span class="nav-badge blue">3</span>
+      </div>
+
+      <div class="nav-item" onclick="showPanel('revenue')">
+        <span class="nav-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+        Revenue
+      </div>
+
+      <div class="nav-section-label">GESTIÓN</div>
+
+      <div class="nav-item" onclick="showPanel('create')">
+        <span class="nav-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        Crear Dealer
+      </div>
+
+      <div class="nav-item" onclick="showPanel('alerts')">
+        <span class="nav-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
+        Alertas
+        <span class="nav-badge">2</span>
+      </div>
+
+      <div class="nav-item" onclick="showPanel('announce')">
+        <span class="nav-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
+        Anuncios
+      </div>
+
+      <div class="nav-item" onclick="showPanel('activity')">
+        <span class="nav-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>
+        Activity Log
+      </div>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <button class="btn-logout" onclick="doLogout()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Cerrar sesión
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title" id="topbar-title">Dashboard</div>
+        <div class="topbar-sub" id="topbar-sub">Bienvenido de vuelta, Diego</div>
+      </div>
+      <div class="topbar-right">
+        <div class="mrr-pill">MRR: $447/mo</div>
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;">D</div>
+      </div>
+    </div>
+
+    <!-- ════ DASHBOARD ════ -->
+    <div class="panel active" id="panel-dashboard">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon">🏪</div>
+          <div class="stat-num">3</div>
+          <div class="stat-label">Dealers activos</div>
+          <div class="stat-change up">↑ 1 este mes</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon">💰</div>
+          <div class="stat-num">$447</div>
+          <div class="stat-label">MRR (ingreso mensual)</div>
+          <div class="stat-change up">↑ $149 este mes</div>
+        </div>
+        <div class="stat-card yellow">
+          <div class="stat-icon">📩</div>
+          <div class="stat-num">34</div>
+          <div class="stat-label">Leads totales esta semana</div>
+          <div class="stat-change up">↑ 12 vs semana pasada</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-icon">⚠️</div>
+          <div class="stat-num">2</div>
+          <div class="stat-label">Alertas pendientes</div>
+          <div class="stat-change" style="color:var(--warning)">1 vence en 7 días</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 340px;gap:20px">
+        <!-- Dealers overview -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Tus Dealers</span>
+            <button class="card-action" onclick="showPanel('dealers')">Ver todos →</button>
+          </div>
+          <div style="padding:0 1.25rem">
+            <div id="dash-dealers-list"></div>
+          </div>
+        </div>
+
+        <!-- Right column -->
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <!-- Quick actions -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">Acciones Rápidas</span></div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:8px">
+              <button class="btn-primary" style="width:100%;justify-content:center" onclick="showPanel('create')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Crear Nuevo Dealer
+              </button>
+              <button class="btn-secondary" style="width:100%;justify-content:center" onclick="showPanel('alerts')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg>
+                Ver Alertas (2)
+              </button>
+              <button class="btn-secondary" style="width:100%;justify-content:center" onclick="showPanel('announce')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                Enviar Anuncio
+              </button>
+            </div>
+          </div>
+
+          <!-- Alerts -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">Alertas</span></div>
+            <div style="padding:0 1.25rem">
+              <div class="alert-item">
+                <div class="alert-dot yellow"></div>
+                <div>
+                  <div class="alert-text">Auto Paisano vence en 7 días</div>
+                  <div class="alert-sub">Plan Pro · $149/mo</div>
+                </div>
+              </div>
+              <div class="alert-item">
+                <div class="alert-dot red"></div>
+                <div>
+                  <div class="alert-text">Dealer 2 sin actividad 14 días</div>
+                  <div class="alert-sub">Último login: hace 2 semanas</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ DEALERS LIST ════ -->
+    <div class="panel" id="panel-dealers">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:1rem">
+        <div class="search-bar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Buscar dealer..." oninput="filterDealers(this.value)">
+        </div>
+        <button class="btn-primary" onclick="showPanel('create')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Crear Dealer
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>DEALER</th>
+              <th>PLAN</th>
+              <th>ESTADO</th>
+              <th>LEADS / MES</th>
+              <th>TRÁFICO</th>
+              <th>ÚLTIMO ACCESO</th>
+              <th>VENCE</th>
+              <th>ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody id="dealers-table-body"></tbody>
+        </table>
+        <div class="table-footer">
+          <span class="table-count" id="dealer-count">3 dealers registrados</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ REVENUE ════ -->
+    <div class="panel" id="panel-revenue">
+      <div class="stats-row">
+        <div class="stat-card green">
+          <div class="stat-icon">💵</div>
+          <div class="stat-num">$447</div>
+          <div class="stat-label">MRR actual</div>
+          <div class="stat-change up">↑ $149 este mes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📅</div>
+          <div class="stat-num">$298</div>
+          <div class="stat-label">MRR mes pasado</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-num">$600</div>
+          <div class="stat-label">Meta mensual</div>
+          <div class="stat-change up">74% completado</div>
+        </div>
+        <div class="stat-card yellow">
+          <div class="stat-icon">📈</div>
+          <div class="stat-num">$153</div>
+          <div class="stat-label">Faltan para la meta</div>
+          <div class="stat-change" style="color:var(--warning)">~1 dealer más</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <!-- Monthly revenue chart -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">Ingresos por Mes</span></div>
+          <div class="card-body">
+            <div class="rev-chart" id="rev-chart"></div>
+          </div>
+        </div>
+
+        <!-- Revenue by plan -->
+        <div class="card">
+          <div class="card-header"><span class="card-title">Por Plan</span></div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:14px">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+                <span style="font-weight:600">Premium ($249)</span>
+                <span style="color:var(--text-2)">1 dealer · $249</span>
+              </div>
+              <div style="height:8px;background:#F3F4F6;border-radius:100px;overflow:hidden">
+                <div style="height:100%;width:55%;background:var(--purple);border-radius:100px"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+                <span style="font-weight:600">Pro ($149)</span>
+                <span style="color:var(--text-2)">1 dealer · $149</span>
+              </div>
+              <div style="height:8px;background:#F3F4F6;border-radius:100px;overflow:hidden">
+                <div style="height:100%;width:33%;background:var(--blue);border-radius:100px"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+                <span style="font-weight:600">Starter ($49)</span>
+                <span style="color:var(--text-2)">1 dealer · $49</span>
+              </div>
+              <div style="height:8px;background:#F3F4F6;border-radius:100px;overflow:hidden">
+                <div style="height:100%;width:11%;background:#D1D5DB;border-radius:100px"></div>
+              </div>
+            </div>
+            <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:13px;color:var(--text-2)">Total MRR</span>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--success)">$447</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Next renewals -->
+        <div class="card" style="grid-column:1/-1">
+          <div class="card-header"><span class="card-title">Próximas Renovaciones</span></div>
+          <div style="padding:0 1.25rem">
+            <div class="alert-item">
+              <div class="alert-dot yellow"></div>
+              <div style="flex:1">
+                <div class="alert-text">Auto Paisano — Plan Pro</div>
+                <div class="alert-sub">Vence en 7 días · $149</div>
+              </div>
+              <button class="btn-primary sm">Recordatorio</button>
+            </div>
+            <div class="alert-item">
+              <div class="alert-dot blue"></div>
+              <div style="flex:1">
+                <div class="alert-text">Dealer 2 — Plan Starter</div>
+                <div class="alert-sub">Vence en 22 días · $49</div>
+              </div>
+              <button class="btn-primary sm">Recordatorio</button>
+            </div>
+            <div class="alert-item">
+              <div class="alert-dot blue"></div>
+              <div style="flex:1">
+                <div class="alert-text">Dealer 3 — Plan Premium</div>
+                <div class="alert-sub">Vence en 28 días · $249</div>
+              </div>
+              <button class="btn-primary sm">Recordatorio</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ CREATE DEALER ════ -->
+    <div class="panel" id="panel-create">
+      <div style="max-width:780px">
+
+        <!-- Step indicator -->
+        <div style="display:flex;align-items:center;gap:0;margin-bottom:2rem" id="step-indicator">
+          <div class="step-dot active" data-step="1" style="display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:100px;background:var(--blue);color:#fff;font-size:13px;font-weight:700;cursor:pointer" onclick="goStep(1)">
+            <span>1</span> Info del Dealer
+          </div>
+          <div style="flex:1;height:2px;background:var(--border);margin:0 8px"></div>
+          <div class="step-dot" data-step="2" style="display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:100px;background:#F3F4F6;color:var(--text-2);font-size:13px;font-weight:700;cursor:pointer" onclick="goStep(2)">
+            <span>2</span> Plantilla & Colores
+          </div>
+          <div style="flex:1;height:2px;background:var(--border);margin:0 8px"></div>
+          <div class="step-dot" data-step="3" style="display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:100px;background:#F3F4F6;color:var(--text-2);font-size:13px;font-weight:700;cursor:pointer" onclick="goStep(3)">
+            <span>3</span> Importar Inventario
+          </div>
+          <div style="flex:1;height:2px;background:var(--border);margin:0 8px"></div>
+          <div class="step-dot" data-step="4" style="display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:100px;background:#F3F4F6;color:var(--text-2);font-size:13px;font-weight:700;cursor:pointer" onclick="goStep(4)">
+            <span>4</span> Confirmar
+          </div>
+        </div>
+
+        <!-- Step 1: Info -->
+        <div id="step-1">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Información del Dealer</span></div>
+            <div class="card-body">
+              <div class="form-grid" style="gap:1rem">
+                <div class="form-field">
+                  <label class="form-label">NOMBRE DEL DEALER</label>
+                  <input class="form-input-sm" placeholder="E&S Auto Paisano" id="new-name">
+                </div>
+                <div class="form-field">
+                  <label class="form-label">TELÉFONO</label>
+                  <input class="form-input-sm" placeholder="(615) 255-7700" id="new-phone">
+                </div>
+                <div class="form-field">
+                  <label class="form-label">EMAIL</label>
+                  <input class="form-input-sm" type="email" placeholder="dealer@email.com" id="new-email">
+                </div>
+                <div class="form-field">
+                  <label class="form-label">WHATSAPP</label>
+                  <input class="form-input-sm" placeholder="+1 (615) 255-7700" id="new-wa">
+                </div>
+                <div class="form-field form-full">
+                  <label class="form-label">DIRECCIÓN</label>
+                  <input class="form-input-sm" placeholder="2115 Nolensville Pike, Nashville TN 37211" id="new-addr">
+                </div>
+                <div class="form-field">
+                  <label class="form-label">PLAN</label>
+                  <select class="form-input-sm" id="new-plan">
+                    <option value="starter">Starter — $49/mo</option>
+                    <option value="pro" selected>Pro — $149/mo</option>
+                    <option value="premium">Premium — $249/mo</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label class="form-label">SUBDOMINIO</label>
+                  <div style="display:flex;align-items:center;gap:0">
+                    <input class="form-input-sm" placeholder="autopaisano" id="new-subdomain" style="border-radius:8px 0 0 8px;border-right:none">
+                    <div style="background:#F3F4F6;border:1.5px solid var(--border);border-radius:0 8px 8px 0;padding:10px 12px;font-size:13px;color:var(--text-2);white-space:nowrap">.cardealerflow.com</div>
+                  </div>
+                </div>
+                <div class="form-field">
+                  <label class="form-label">IDIOMA PRINCIPAL</label>
+                  <select class="form-input-sm">
+                    <option>Español / English (Bilingual)</option>
+                    <option>English only</option>
+                    <option>Español only</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;margin-top:1rem">
+            <button class="btn-primary" onclick="goStep(2)">Siguiente: Plantilla →</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Template & Colors -->
+        <div id="step-2" style="display:none">
+          <div class="card" style="margin-bottom:1rem">
+            <div class="card-header"><span class="card-title">Elige una Plantilla</span></div>
+            <div class="card-body">
+              <div class="templates-grid">
+                <div class="template-card selected" onclick="selectTemplate(this,'BHPH Hispano')" style="position:relative">
+                  <div class="template-check">✓</div>
+                  <div class="template-preview" style="background:linear-gradient(135deg,#0A0A0A,#1a1a1a)">🚗</div>
+                  <div class="template-name">BHPH Hispano</div>
+                </div>
+                <div class="template-card" onclick="selectTemplate(this,'Premium Dark')" style="position:relative">
+                  <div class="template-check">✓</div>
+                  <div class="template-preview" style="background:linear-gradient(135deg,#080D1E,#1A2A6B)">🏎️</div>
+                  <div class="template-name">Premium Dark</div>
+                </div>
+                <div class="template-card" onclick="selectTemplate(this,'Clean Light')" style="position:relative">
+                  <div class="template-check">✓</div>
+                  <div class="template-preview" style="background:linear-gradient(135deg,#F8F9FB,#E5E7EB)">🚙</div>
+                  <div class="template-name">Clean Light</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom:1rem">
+            <div class="card-header"><span class="card-title">Colores del Dealer</span></div>
+            <div class="card-body">
+              <div class="form-grid" style="gap:1rem">
+                <div class="form-field">
+                  <label class="form-label">COLOR PRIMARIO (ACCENT)</label>
+                  <div class="color-row">
+                    <input type="color" value="#F5C518" id="color-primary" oninput="updateColorPreview('primary',this.value)">
+                    <input class="form-input-sm" value="#F5C518" id="color-primary-hex" style="flex:1" oninput="updateColorFromHex('primary',this.value)">
+                    <div class="color-preview" id="color-primary-preview" style="background:#F5C518"></div>
+                  </div>
+                </div>
+                <div class="form-field">
+                  <label class="form-label">COLOR DE FONDO</label>
+                  <div class="color-row">
+                    <input type="color" value="#0A0A0A" id="color-bg" oninput="updateColorPreview('bg',this.value)">
+                    <input class="form-input-sm" value="#0A0A0A" id="color-bg-hex" style="flex:1" oninput="updateColorFromHex('bg',this.value)">
+                    <div class="color-preview" id="color-bg-preview" style="background:#0A0A0A"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live preview -->
+              <div style="margin-top:1.25rem">
+                <label class="form-label">VISTA PREVIA</label>
+                <div id="color-live-preview" style="border-radius:10px;overflow:hidden;border:1px solid var(--border)">
+                  <div id="prev-nav" style="background:#0A0A0A;padding:10px 16px;display:flex;align-items:center;gap:8px">
+                    <div style="width:28px;height:28px;border-radius:6px;background:#F5C518;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#000" id="prev-badge">E&S</div>
+                    <span style="font-size:12px;font-weight:700;color:#fff" id="prev-name">Auto Paisano</span>
+                    <div style="margin-left:auto;background:#F5C518;color:#000;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px" id="prev-btn">LLAMAR</div>
+                  </div>
+                  <div id="prev-hero" style="background:#0A0A0A;padding:2rem;text-align:center">
+                    <div style="font-size:16px;font-weight:800;color:#fff;margin-bottom:6px">Hablamos Español. Te Financiamos.</div>
+                    <div style="display:inline-block;background:#F5C518;color:#000;font-size:12px;font-weight:700;padding:8px 20px;border-radius:6px" id="prev-cta">Ver Inventario</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Background image -->
+              <div style="margin-top:1.25rem">
+                <label class="form-label">IMAGEN DE FONDO DEL HERO (OPCIONAL)</label>
+                <div style="border:2px dashed var(--border);border-radius:10px;padding:1.5rem;text-align:center;cursor:pointer;background:#FAFAFA" onclick="document.getElementById('bg-upload').click()">
+                  <div style="font-size:24px;margin-bottom:6px">🖼️</div>
+                  <div style="font-size:13px;color:var(--text-2)"><span style="color:var(--blue);font-weight:600">Haz clic</span> para subir imagen de fondo</div>
+                  <input type="file" id="bg-upload" accept="image/*" style="display:none">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;margin-top:1rem">
+            <button class="btn-secondary" onclick="goStep(1)">← Anterior</button>
+            <button class="btn-primary" onclick="goStep(3)">Siguiente: Importar Inventario →</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Scraper -->
+        <div id="step-3" style="display:none">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Importar Inventario Actual</span></div>
+            <div class="card-body">
+              <div class="scraper-box">
+                <div class="scraper-title">🤖 Importador Automático de Inventario</div>
+                <div class="scraper-desc">Pega la URL del sitio web actual del dealer y extraemos todo su inventario automáticamente. Funciona con la mayoría de sitios de dealers.</div>
+                <div class="scraper-row">
+                  <input class="scraper-input" type="url" placeholder="https://autopaisano.com" id="scrape-url">
+                  <button class="btn-scrape" onclick="runScraper()">⚡ Importar Inventario</button>
+                </div>
+                <div class="scraper-result" id="scraper-result">
+                  ✅ ¡Éxito! Se encontraron <strong id="scraped-count">24</strong> vehículos. Listos para importar al nuevo sitio.
+                </div>
+              </div>
+
+              <p style="font-size:13px;color:var(--text-2);margin-bottom:1rem">O agrega vehículos manualmente después de crear el dealer.</p>
+
+              <div style="background:#F9FAFB;border:1px solid var(--border);border-radius:10px;padding:1.25rem">
+                <div style="font-size:13px;font-weight:700;margin-bottom:1rem">Vehículos a importar:</div>
+                <div id="scraped-list" style="display:flex;flex-direction:column;gap:8px">
+                  <div style="font-size:12px;color:var(--text-3);text-align:center;padding:1rem">Ejecuta el importador para ver el inventario aquí</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;margin-top:1rem">
+            <button class="btn-secondary" onclick="goStep(2)">← Anterior</button>
+            <button class="btn-primary" onclick="goStep(4)">Siguiente: Confirmar →</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Confirm -->
+        <div id="step-4" style="display:none">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Confirmar y Crear Dealer</span></div>
+            <div class="card-body">
+              <div id="confirm-summary" style="display:flex;flex-direction:column;gap:12px;margin-bottom:1.5rem"></div>
+
+              <div style="background:#F0FDF4;border:1px solid #86EFAC;border-radius:10px;padding:1rem;font-size:13px;color:#15803D;margin-bottom:1.5rem">
+                <strong>✅ Todo listo.</strong> Al presionar "Crear Dealer", el sitio web estará activo inmediatamente en el subdominio asignado.
+              </div>
+
+              <div style="display:flex;gap:10px;justify-content:flex-end">
+                <button class="btn-secondary" onclick="goStep(3)">← Anterior</button>
+                <button class="btn-primary green" style="font-size:17px;padding:12px 28px" onclick="createDealer()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  Crear Dealer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ ALERTS ════ -->
+    <div class="panel" id="panel-alerts">
+      <div style="max-width:700px;display:flex;flex-direction:column;gap:16px">
+        <div class="card">
+          <div class="card-header"><span class="card-title">⚠️ Alertas Activas</span></div>
+          <div style="padding:0 1.25rem">
+            <div class="alert-item">
+              <div class="alert-dot yellow"></div>
+              <div style="flex:1">
+                <div class="alert-text" style="font-weight:600">Auto Paisano — Suscripción vence en 7 días</div>
+                <div class="alert-sub">Plan Pro · $149/mo · Vence el 20 de Abril</div>
+              </div>
+              <div style="display:flex;gap:8px">
+                <button class="btn-primary sm">Renovar</button>
+                <button class="btn-secondary sm">Recordar</button>
+              </div>
+            </div>
+            <div class="alert-item">
+              <div class="alert-dot red"></div>
+              <div style="flex:1">
+                <div class="alert-text" style="font-weight:600">Dealer 2 — Sin actividad por 14 días</div>
+                <div class="alert-sub">Último login: hace 2 semanas · Riesgo de cancelación</div>
+              </div>
+              <div style="display:flex;gap:8px">
+                <button class="btn-primary sm">Contactar</button>
+                <button class="btn-secondary sm">Ignorar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span class="card-title">✅ Resueltas Recientemente</span></div>
+          <div style="padding:0 1.25rem">
+            <div class="alert-item">
+              <div class="alert-dot" style="background:var(--success)"></div>
+              <div>
+                <div class="alert-text">Dealer 3 renovó su Plan Premium</div>
+                <div class="alert-sub">Renovado hace 3 días · $249/mo</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ ANNOUNCEMENTS ════ -->
+    <div class="panel" id="panel-announce">
+      <div style="max-width:680px">
+        <div class="announce-card">
+          <div class="announce-title">📣 Enviar Anuncio a Todos los Dealers</div>
+          <div class="announce-desc">Este mensaje llegará por email a todos tus dealers activos</div>
+          <div style="margin-bottom:10px">
+            <label style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.5px;display:block;margin-bottom:6px">DESTINATARIOS</label>
+            <select class="form-input-sm" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);color:#fff">
+              <option>Todos los dealers (3)</option>
+              <option>Solo Plan Pro</option>
+              <option>Solo Plan Premium</option>
+              <option>Dealers activos solamente</option>
+            </select>
+          </div>
+          <div style="margin-bottom:10px">
+            <label style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.5px;display:block;margin-bottom:6px">ASUNTO</label>
+            <input class="form-input-sm" placeholder="Nueva función disponible en tu panel..." style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);color:#fff;width:100%">
+          </div>
+          <div style="margin-bottom:12px">
+            <label style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.5px;display:block;margin-bottom:6px">MENSAJE</label>
+            <textarea class="announce-textarea" placeholder="Hola! Queremos informarte que..."></textarea>
+          </div>
+          <button class="btn-primary" onclick="alert('✅ Anuncio enviado a todos los dealers!')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Enviar Anuncio
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span class="card-title">Anuncios Enviados</span></div>
+          <div style="padding:0 1.25rem">
+            <div class="log-item">
+              <div class="log-icon" style="background:#EBF2FF">📧</div>
+              <div class="log-content">
+                <div class="log-text">Nueva función: Calculadora de pagos actualizada</div>
+                <div class="log-time">Enviado a 3 dealers · hace 5 días</div>
+              </div>
+            </div>
+            <div class="log-item">
+              <div class="log-icon" style="background:#DCFCE7">🎉</div>
+              <div class="log-content">
+                <div class="log-text">Bienvenido a CardealerFlow — Guía de inicio</div>
+                <div class="log-time">Enviado a 3 dealers · hace 2 semanas</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ ACTIVITY LOG ════ -->
+    <div class="panel" id="panel-activity">
+      <div style="max-width:700px">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Activity Log</span>
+            <select style="font-size:12px;border:1px solid var(--border);border-radius:6px;padding:4px 8px;color:var(--text-2)">
+              <option>Todos los dealers</option>
+              <option>Auto Paisano</option>
+              <option>Dealer 2</option>
+              <option>Dealer 3</option>
+            </select>
+          </div>
+          <div style="padding:0 1.25rem" id="activity-log-list"></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ════ MODAL: EDIT DEALER ════ -->
+<div class="modal-overlay" id="modal-edit">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="edit-modal-title">Editar Dealer</span>
+      <button class="modal-close" onclick="closeModal('modal-edit')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid" style="gap:1rem;margin-bottom:1rem">
+        <div>
+          <label class="form-label">NOMBRE</label>
+          <input class="form-input-sm" id="edit-name">
+        </div>
+        <div>
+          <label class="form-label">PLAN</label>
+          <select class="form-input-sm" id="edit-plan">
+            <option value="starter">Starter — $49/mo</option>
+            <option value="pro">Pro — $149/mo</option>
+            <option value="premium">Premium — $249/mo</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">TELÉFONO</label>
+          <input class="form-input-sm" id="edit-phone">
+        </div>
+        <div>
+          <label class="form-label">EMAIL</label>
+          <input class="form-input-sm" id="edit-email">
+        </div>
+        <div class="form-full">
+          <label class="form-label">DIRECCIÓN</label>
+          <input class="form-input-sm" id="edit-addr">
+        </div>
+        <div>
+          <label class="form-label">COLOR PRIMARIO</label>
+          <div class="color-row">
+            <input type="color" id="edit-color" value="#F5C518">
+            <input class="form-input-sm" id="edit-color-hex" value="#F5C518" style="flex:1">
+          </div>
+        </div>
+        <div>
+          <label class="form-label">ESTADO</label>
+          <div class="toggle-wrap" style="margin-top:8px">
+            <label class="toggle"><input type="checkbox" id="edit-active" checked><span class="toggle-slider"></span></label>
+            <span class="toggle-label" id="edit-active-label">Activo</span>
+          </div>
+        </div>
+        <div class="form-full">
+          <label class="form-label">NOTAS INTERNAS</label>
+          <textarea class="form-input-sm" id="edit-notes" rows="3" placeholder="El dueño prefiere contacto por WhatsApp..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-edit')">Cancelar</button>
+      <button class="btn-primary" onclick="saveEdit()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Guardar Cambios
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MODAL: DEALER STATS ════ -->
+<div class="modal-overlay" id="modal-stats">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <span class="modal-title" id="stats-modal-title">Estadísticas del Dealer</span>
+      <button class="modal-close" onclick="closeModal('modal-stats')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1.5rem">
+        <div style="background:var(--blue-light);border-radius:10px;padding:1rem;text-align:center">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;color:var(--blue)" id="stat-leads">34</div>
+          <div style="font-size:12px;color:var(--text-2)">Leads este mes</div>
+        </div>
+        <div style="background:#DCFCE7;border-radius:10px;padding:1rem;text-align:center">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;color:#15803D" id="stat-traffic">1,240</div>
+          <div style="font-size:12px;color:var(--text-2)">Visitas este mes</div>
+        </div>
+        <div style="background:#FFFBEB;border-radius:10px;padding:1rem;text-align:center">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;color:#B45309" id="stat-cars">24</div>
+          <div style="font-size:12px;color:var(--text-2)">Autos en inventario</div>
+        </div>
+      </div>
+      <div style="background:#F9FAFB;border-radius:10px;padding:1.25rem">
+        <div style="font-size:13px;font-weight:700;margin-bottom:1rem">Canales de leads</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:80px;font-size:12px;color:var(--text-2)">WhatsApp</div>
+            <div style="flex:1;height:8px;background:#E5E7EB;border-radius:100px;overflow:hidden"><div style="height:100%;width:55%;background:#25D366;border-radius:100px"></div></div>
+            <div style="font-size:12px;font-weight:700">55%</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:80px;font-size:12px;color:var(--text-2)">Web Chat</div>
+            <div style="flex:1;height:8px;background:#E5E7EB;border-radius:100px;overflow:hidden"><div style="height:100%;width:30%;background:var(--blue);border-radius:100px"></div></div>
+            <div style="font-size:12px;font-weight:700">30%</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:80px;font-size:12px;color:var(--text-2)">Email</div>
+            <div style="flex:1;height:8px;background:#E5E7EB;border-radius:100px;overflow:hidden"><div style="height:100%;width:15%;background:#F59E0B;border-radius:100px"></div></div>
+            <div style="font-size:12px;font-weight:700">15%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════
+   DATA
+══════════════════════════════════ */
+const dealers = [
+  { id:1, name:'Auto Paisano', subdomain:'autopaisano', plan:'pro', status:'active', leads:34, traffic:1240, cars:24, lastLogin:'hace 2 hrs', expires:'Apr 20, 2025', phone:'(615) 255-7700', email:'eandsautosales@hotmail.com', addr:'2115 Nolensville Pike, Nashville TN', color:'#F5C518', notes:'Cliente original. Prefiere WhatsApp.' },
+  { id:2, name:'Dealer 2',     subdomain:'dealer2',     plan:'starter', status:'inactive', leads:8, traffic:320, cars:12, lastLogin:'hace 14 días', expires:'May 5, 2025', phone:'(708) 555-1234', email:'dealer2@email.com', addr:'Chicago, IL', color:'#0057FF', notes:'' },
+  { id:3, name:'Dealer 3',     subdomain:'dealer3',     plan:'premium', status:'active', leads:51, traffic:2100, cars:38, lastLogin:'hace 1 día', expires:'May 11, 2025', phone:'(213) 555-9876', email:'dealer3@email.com', addr:'Los Angeles, CA', color:'#8B5CF6', notes:'Cliente VIP. Muy activo.' },
+];
+
+const planMap = { starter:{label:'Starter',cls:'plan-starter',price:49}, pro:{label:'Pro',cls:'plan-pro',price:149}, premium:{label:'Premium',cls:'plan-premium',price:249} };
+const statusMap = { active:{label:'Activo',cls:'status-active'}, inactive:{label:'Inactivo',cls:'status-inactive'}, trial:{label:'Trial',cls:'status-trial'} };
+
+const activityLog = [
+  { icon:'🔐', text:'Auto Paisano inició sesión', time:'hace 2 horas' },
+  { icon:'🚗', text:'Auto Paisano agregó 2 vehículos', time:'hace 3 horas' },
+  { icon:'📩', text:'Auto Paisano recibió 5 nuevos leads', time:'hace 5 horas' },
+  { icon:'👀', text:'Dealer 3 vio el panel de analytics', time:'hace 1 día' },
+  { icon:'🚗', text:'Dealer 3 actualizó 3 precios de vehículos', time:'hace 1 día' },
+  { icon:'📩', text:'Dealer 3 recibió 8 leads vía WhatsApp', time:'hace 2 días' },
+  { icon:'💰', text:'Dealer 3 renovó Plan Premium · $249', time:'hace 3 días' },
+  { icon:'⚙️', text:'Auto Paisano cambió foto de hero', time:'hace 5 días' },
+  { icon:'📣', text:'Diego envió anuncio: Calculadora actualizada', time:'hace 5 días' },
+  { icon:'🆕', text:'Dealer 2 se registró en Plan Starter', time:'hace 2 semanas' },
+];
+
+/* ══════════════════════════════════
+   LOGIN
+══════════════════════════════════ */
+function doLogin() {
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('app').classList.add('visible');
+  renderAll();
+}
+
+function doLogout() {
+  document.getElementById('app').classList.remove('visible');
+  document.getElementById('login-page').style.display = 'flex';
+}
+
+/* ══════════════════════════════════
+   NAVIGATION
+══════════════════════════════════ */
+const panelTitles = {
+  dashboard: ['Dashboard', 'Bienvenido de vuelta, Diego'],
+  dealers:   ['Dealers', 'Gestiona todos tus clientes'],
+  revenue:   ['Revenue', 'Tu ingreso mensual recurrente'],
+  create:    ['Crear Dealer', 'Nuevo cliente en segundos'],
+  alerts:    ['Alertas', 'Acciones que requieren atención'],
+  announce:  ['Anuncios', 'Comunícate con tus dealers'],
+  activity:  ['Activity Log', 'Todo lo que pasa en la plataforma'],
+};
+
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick')?.includes(`'${name}'`)) n.classList.add('active');
+  });
+  const t = panelTitles[name] || [name,''];
+  document.getElementById('topbar-title').textContent = t[0];
+  document.getElementById('topbar-sub').textContent = t[1];
+}
+
+/* ══════════════════════════════════
+   RENDER
+══════════════════════════════════ */
+function renderAll() {
+  renderDashDealers();
+  renderDealersTable(dealers);
+  renderRevChart();
+  renderActivityLog();
+}
+
+function renderDashDealers() {
+  const list = document.getElementById('dash-dealers-list');
+  list.innerHTML = dealers.map(d => {
+    const pl = planMap[d.plan];
+    const st = statusMap[d.status] || statusMap.active;
+    return `
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">
+        <div style="width:36px;height:36px;border-radius:8px;background:${d.color}20;border:1px solid ${d.color}40;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🏪</div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700">${d.name}</div>
+          <div style="font-size:11px;color:var(--text-2)">${d.subdomain}.cardealerflow.com</div>
+        </div>
+        <span class="plan-badge ${pl.cls}">${pl.label}</span>
+        <span class="status-pill ${st.cls}">${st.label}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderDealersTable(data) {
+  const tbody = document.getElementById('dealers-table-body');
+  tbody.innerHTML = data.map(d => {
+    const pl = planMap[d.plan];
+    const st = statusMap[d.status] || statusMap.active;
+    return `
+      <tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:34px;height:34px;border-radius:8px;background:${d.color}20;border:1px solid ${d.color}40;display:flex;align-items:center;justify-content:center;flex-shrink:0">🏪</div>
+            <div>
+              <div class="dealer-name-cell">${d.name}</div>
+              <div class="dealer-url-cell">${d.subdomain}.cardealerflow.com</div>
+            </div>
+          </div>
+        </td>
+        <td><span class="plan-badge ${pl.cls}">${pl.label} · $${pl.price}</span></td>
+        <td><span class="status-pill ${st.cls}">${st.label}</span></td>
+        <td><strong>${d.leads}</strong> leads</td>
+        <td>${d.traffic.toLocaleString()} visitas</td>
+        <td style="font-size:12px;color:var(--text-2)">${d.lastLogin}</td>
+        <td style="font-size:12px;color:var(--text-2)">${d.expires}</td>
+        <td>
+          <div class="action-row">
+            <button class="btn-icon tooltip" data-tip="Ver estadísticas" onclick="openStats(${d.id})">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </button>
+            <button class="btn-icon tooltip" data-tip="Editar dealer" onclick="openEdit(${d.id})">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="btn-icon ${d.status==='active'?'danger':'success'} tooltip" data-tip="${d.status==='active'?'Desactivar':'Activar'}" onclick="toggleDealer(${d.id})">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/>${d.status==='active'?'<line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>':''}</svg>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+  document.getElementById('dealer-count').textContent = `${data.length} dealers registrados`;
+}
+
+function renderRevChart() {
+  const data = [149, 149, 298, 298, 298, 447];
+  const labels = ['Nov','Dic','Ene','Feb','Mar','Abr'];
+  const max = Math.max(...data);
+  const chart = document.getElementById('rev-chart');
+  chart.innerHTML = data.map((v,i) => `
+    <div class="rev-bar-wrap">
+      <div class="rev-bar-val">$${v}</div>
+      <div class="rev-bar ${i===data.length-1?'current':''}" style="height:${Math.round((v/max)*90)}px"></div>
+      <div class="rev-bar-label">${labels[i]}</div>
+    </div>
+  `).join('');
+}
+
+function renderActivityLog() {
+  const list = document.getElementById('activity-log-list');
+  list.innerHTML = activityLog.map(l => `
+    <div class="log-item">
+      <div class="log-icon" style="background:var(--blue-light)">${l.icon}</div>
+      <div class="log-content">
+        <div class="log-text">${l.text}</div>
+        <div class="log-time">${l.time}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ══════════════════════════════════
+   MODALS
+══════════════════════════════════ */
+let editingId = null;
+
+function openEdit(id) {
+  const d = dealers.find(x => x.id === id);
+  editingId = id;
+  document.getElementById('edit-modal-title').textContent = `Editar — ${d.name}`;
+  document.getElementById('edit-name').value = d.name;
+  document.getElementById('edit-plan').value = d.plan;
+  document.getElementById('edit-phone').value = d.phone;
+  document.getElementById('edit-email').value = d.email;
+  document.getElementById('edit-addr').value = d.addr;
+  document.getElementById('edit-color').value = d.color;
+  document.getElementById('edit-color-hex').value = d.color;
+  document.getElementById('edit-active').checked = d.status === 'active';
+  document.getElementById('edit-notes').value = d.notes;
+  document.getElementById('modal-edit').classList.add('open');
+}
+
+function saveEdit() {
+  const d = dealers.find(x => x.id === editingId);
+  d.name = document.getElementById('edit-name').value;
+  d.plan = document.getElementById('edit-plan').value;
+  d.phone = document.getElementById('edit-phone').value;
+  d.email = document.getElementById('edit-email').value;
+  d.addr = document.getElementById('edit-addr').value;
+  d.color = document.getElementById('edit-color').value;
+  d.status = document.getElementById('edit-active').checked ? 'active' : 'inactive';
+  d.notes = document.getElementById('edit-notes').value;
+  closeModal('modal-edit');
+  renderDashDealers();
+  renderDealersTable(dealers);
+  alert(`✅ Dealer "${d.name}" actualizado correctamente.`);
+}
+
+function openStats(id) {
+  const d = dealers.find(x => x.id === id);
+  document.getElementById('stats-modal-title').textContent = `Estadísticas — ${d.name}`;
+  document.getElementById('stat-leads').textContent = d.leads;
+  document.getElementById('stat-traffic').textContent = d.traffic.toLocaleString();
+  document.getElementById('stat-cars').textContent = d.cars;
+  document.getElementById('modal-stats').classList.add('open');
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+
+/* ══════════════════════════════════
+   TOGGLE DEALER
+══════════════════════════════════ */
+function toggleDealer(id) {
+  const d = dealers.find(x => x.id === id);
+  const action = d.status === 'active' ? 'desactivar' : 'activar';
+  if (!confirm(`¿Seguro que quieres ${action} a "${d.name}"?`)) return;
+  d.status = d.status === 'active' ? 'inactive' : 'active';
+  renderDashDealers();
+  renderDealersTable(dealers);
+}
+
+/* ══════════════════════════════════
+   FILTER DEALERS
+══════════════════════════════════ */
+function filterDealers(q) {
+  const filtered = dealers.filter(d =>
+    d.name.toLowerCase().includes(q.toLowerCase()) ||
+    d.subdomain.toLowerCase().includes(q.toLowerCase())
+  );
+  renderDealersTable(filtered);
+}
+
+/* ══════════════════════════════════
+   CREATE DEALER — STEPS
+══════════════════════════════════ */
+let currentStep = 1;
+
+function goStep(n) {
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById(`step-${i}`);
+    if (el) el.style.display = i === n ? 'block' : 'none';
+  }
+  document.querySelectorAll('.step-dot').forEach(d => {
+    const s = parseInt(d.dataset.step);
+    if (s === n) { d.style.background = 'var(--blue)'; d.style.color = '#fff'; }
+    else if (s < n) { d.style.background = '#DCFCE7'; d.style.color = '#15803D'; }
+    else { d.style.background = '#F3F4F6'; d.style.color = 'var(--text-2)'; }
+  });
+  currentStep = n;
+  if (n === 4) buildConfirmSummary();
+}
+
+function buildConfirmSummary() {
+  const name = document.getElementById('new-name').value || '(sin nombre)';
+  const plan = document.getElementById('new-plan').value;
+  const sub = document.getElementById('new-subdomain').value || '(subdominio)';
+  const pl = planMap[plan];
+  document.getElementById('confirm-summary').innerHTML = `
+    <div style="background:#F9FAFB;border:1px solid var(--border);border-radius:10px;padding:1rem">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><div style="font-size:11px;color:var(--text-2);font-weight:700;letter-spacing:0.5px">DEALER</div><div style="font-size:15px;font-weight:700;margin-top:2px">${name}</div></div>
+        <div><div style="font-size:11px;color:var(--text-2);font-weight:700;letter-spacing:0.5px">PLAN</div><div style="margin-top:2px"><span class="plan-badge ${pl.cls}">${pl.label} · $${pl.price}/mo</span></div></div>
+        <div><div style="font-size:11px;color:var(--text-2);font-weight:700;letter-spacing:0.5px">URL DEL SITIO</div><div style="font-size:13px;font-weight:600;color:var(--blue);margin-top:2px">${sub}.cardealerflow.com</div></div>
+        <div><div style="font-size:11px;color:var(--text-2);font-weight:700;letter-spacing:0.5px">ESTADO</div><div style="margin-top:2px"><span class="status-pill status-active">Activo inmediatamente</span></div></div>
+      </div>
+    </div>
+  `;
+}
+
+function createDealer() {
+  const name = document.getElementById('new-name').value || 'Nuevo Dealer';
+  const plan = document.getElementById('new-plan').value;
+  const sub = document.getElementById('new-subdomain').value || 'newdealer';
+  const pl = planMap[plan];
+  dealers.push({
+    id: dealers.length + 1,
+    name, subdomain: sub, plan,
+    status: 'active',
+    leads: 0, traffic: 0, cars: 0,
+    lastLogin: 'Nunca',
+    expires: 'May 13, 2025',
+    phone: document.getElementById('new-phone').value || '',
+    email: document.getElementById('new-email').value || '',
+    addr: document.getElementById('new-addr').value || '',
+    color: document.getElementById('color-primary').value,
+    notes: '',
+  });
+  renderDashDealers();
+  renderDealersTable(dealers);
+  alert(`🎉 ¡Dealer "${name}" creado exitosamente!\n\nSitio web activo en:\n${sub}.cardealerflow.com\n\nPlan: ${pl.label} · $${pl.price}/mo`);
+  showPanel('dealers');
+  goStep(1);
+  document.getElementById('new-name').value = '';
+  document.getElementById('new-phone').value = '';
+  document.getElementById('new-email').value = '';
+  document.getElementById('new-subdomain').value = '';
+}
+
+/* ══════════════════════════════════
+   TEMPLATE SELECTOR
+══════════════════════════════════ */
+function selectTemplate(el, name) {
+  document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+/* ══════════════════════════════════
+   COLOR LIVE PREVIEW
+══════════════════════════════════ */
+function updateColorPreview(type, val) {
+  if (type === 'primary') {
+    document.getElementById('color-primary-hex').value = val;
+    document.getElementById('color-primary-preview').style.background = val;
+    document.getElementById('prev-btn').style.background = val;
+    document.getElementById('prev-cta').style.background = val;
+    document.getElementById('prev-badge').style.background = val;
+  } else {
+    document.getElementById('color-bg-hex').value = val;
+    document.getElementById('color-bg-preview').style.background = val;
+    document.getElementById('prev-nav').style.background = val;
+    document.getElementById('prev-hero').style.background = val;
+  }
+}
+
+function updateColorFromHex(type, val) {
+  if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+    document.getElementById(`color-${type}`).value = val;
+    updateColorPreview(type, val);
+  }
+}
+
+/* ══════════════════════════════════
+   SCRAPER
+══════════════════════════════════ */
+function runScraper() {
+  const url = document.getElementById('scrape-url').value;
+  if (!url) { alert('Por favor ingresa una URL'); return; }
+  const btn = event.target;
+  btn.textContent = '⏳ Importando...';
+  btn.disabled = true;
+  setTimeout(() => {
+    const count = Math.floor(Math.random() * 20) + 10;
+    document.getElementById('scraped-count').textContent = count;
+    document.getElementById('scraper-result').style.display = 'block';
+    btn.textContent = '⚡ Importar Inventario';
+    btn.disabled = false;
+    const mockCars = [
+      { year:2019, make:'Toyota', model:'Camry', price:'$14,500', miles:'42,000 mi' },
+      { year:2020, make:'Honda', model:'Civic', price:'$13,200', miles:'38,000 mi' },
+      { year:2018, make:'Ford', model:'F-150', price:'$22,000', miles:'61,000 mi' },
+      { year:2017, make:'BMW', model:'X3', price:'$18,900', miles:'55,000 mi' },
+    ];
+    document.getElementById('scraped-list').innerHTML = mockCars.map(c => `
+      <div style="display:flex;align-items:center;gap:10px;background:#F9FAFB;border:1px solid var(--border);border-radius:8px;padding:10px 14px">
+        <span style="font-size:18px">🚗</span>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700">${c.year} ${c.make} ${c.model}</div>
+          <div style="font-size:11px;color:var(--text-2)">${c.miles} · Rebuilt</div>
+        </div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--blue)">${c.price}</div>
+        <div style="width:18px;height:18px;border-radius:50%;background:#DCFCE7;display:flex;align-items:center;justify-content:center;font-size:10px;color:#15803D">✓</div>
+      </div>
+    `).join('') + `<div style="font-size:12px;color:var(--text-3);text-align:center;padding:8px">+ ${count - 4} vehículos más...</div>`;
+  }, 2500);
+}
+
+/* ══════════════════════════════════
+   TOGGLE ACTIVE LABEL
+══════════════════════════════════ */
+document.getElementById('edit-active')?.addEventListener('change', function() {
+  document.getElementById('edit-active-label').textContent = this.checked ? 'Activo' : 'Inactivo';
+});
+</script>
+</body>
+</html>
